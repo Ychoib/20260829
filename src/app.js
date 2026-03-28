@@ -1,0 +1,566 @@
+import { invitationData } from "./invitation-data.js?v=20260318b";
+
+const app = document.querySelector("#app");
+const toast = document.querySelector("#toast");
+const lightbox = document.querySelector("#lightbox");
+const lightboxImage = document.querySelector("#lightbox-image");
+const lightboxCaption = document.querySelector("#lightbox-caption");
+const musicPlayer = document.querySelector("#bg-music");
+
+let countdownTimerId;
+
+function escapeHtml(text) {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  window.clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 1800);
+}
+
+async function copyText(text, message = "복사했어요.") {
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(message);
+  } catch {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "absolute";
+    textarea.style.left = "-9999px";
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    showToast(message);
+  }
+}
+
+function formatWithLineBreaks(lines) {
+  return lines.map((line) => escapeHtml(line)).join("<br />");
+}
+
+function buildCalendar(dateString) {
+  const targetDate = new Date(dateString);
+  const year = targetDate.getFullYear();
+  const month = targetDate.getMonth();
+  const date = targetDate.getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+  const cells = [];
+
+  for (let index = 0; index < firstDay; index += 1) {
+    cells.push({ label: "", isBlank: true, isActive: false });
+  }
+
+  for (let day = 1; day <= lastDate; day += 1) {
+    cells.push({ label: String(day), isBlank: false, isActive: day === date });
+  }
+
+  while (cells.length % 7 !== 0) {
+    cells.push({ label: "", isBlank: true, isActive: false });
+  }
+
+  return cells;
+}
+
+function renderCalendar(dateString) {
+  const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const cells = buildCalendar(dateString);
+
+  return `
+    <div class="calendar">
+      <div class="calendar__weekdays">
+        ${weekdays.map((day) => `<span>${day}</span>`).join("")}
+      </div>
+      <div class="calendar__grid">
+        ${cells
+          .map((cell) => {
+            if (cell.isBlank) {
+              return '<span class="calendar__cell calendar__cell--blank"></span>';
+            }
+
+            return `<span class="calendar__cell${cell.isActive ? " calendar__cell--active" : ""}">${cell.label}</span>`;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderInfoCards(cards) {
+  return cards
+    .map(
+      (card) => `
+        <article class="info-card reveal" data-reveal>
+          <span class="info-card__label">${escapeHtml(card.title)}</span>
+          <h3 class="info-card__heading">${escapeHtml(card.heading)}</h3>
+          <p class="info-card__body">${formatWithLineBreaks(card.lines)}</p>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderDirections(items) {
+  return items
+    .map(
+      (item) => `
+        <article class="direction-card reveal" data-reveal>
+          <h3>${escapeHtml(item.title)}</h3>
+          <ul>
+            ${item.lines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
+          </ul>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function renderGallery(items) {
+  return items
+    .map(
+      (item, index) => `
+        <button
+          class="gallery-card ${item.layout === "featured" ? "gallery-card--featured" : ""} reveal"
+          type="button"
+          data-gallery-index="${index}"
+          data-reveal
+          aria-label="${escapeHtml(item.alt)} 크게 보기"
+        >
+          <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy" />
+          <span class="gallery-card__caption">${escapeHtml(item.caption)}</span>
+        </button>
+      `,
+    )
+    .join("");
+}
+
+function renderContacts(items) {
+  return items
+    .map(
+      (item) => `
+        <article class="contact-card reveal" data-reveal>
+          <span class="contact-card__role">${escapeHtml(item.role)}</span>
+          <h3 class="contact-card__name">${escapeHtml(item.name)}</h3>
+          <p class="contact-card__phone">${escapeHtml(item.phone)}</p>
+          <a class="contact-card__button" href="tel:${item.phone.replaceAll("-", "")}">
+            ${escapeHtml(item.buttonLabel)}
+          </a>
+        </article>
+      `,
+    )
+    .join("");
+}
+
+function createPageMarkup(data) {
+  return `
+    <button class="music-fab" type="button" data-action="music-toggle" aria-pressed="false" aria-label="배경음악 재생">
+      <span class="music-fab__icon">♪</span>
+      <span class="music-fab__label">BGM</span>
+    </button>
+
+    <section class="hero">
+      <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" />
+      <div class="hero__shade" aria-hidden="true"></div>
+      <div class="hero__content">
+        <p class="hero__label">${escapeHtml(data.hero.label)}</p>
+        <p class="hero__script">${escapeHtml(data.couple.scriptTitle)}</p>
+        <h1 class="hero__names">${escapeHtml(data.couple.title)}</h1>
+        <p class="hero__line">${escapeHtml(data.couple.invitationLine)}</p>
+        <div class="hero__datebar">
+          <span>${escapeHtml(data.event.dayLabel)}</span>
+          <span>${escapeHtml(data.event.monthLabel)}</span>
+          <span>${escapeHtml(data.event.yearLabel)}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--story">
+      <div class="story-card reveal is-visible" data-reveal>
+        <div class="story-card__content">
+          <p class="section-tag">${escapeHtml(data.spotlight.label)}</p>
+          <h2 class="section-title">${escapeHtml(data.couple.storyTitle)}</h2>
+          <p class="story-card__text">${escapeHtml(data.couple.storyText)}</p>
+        </div>
+        <figure class="story-card__figure">
+          <img src="${data.spotlight.image}" alt="${escapeHtml(data.spotlight.alt)}" loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="paper-card reveal" data-reveal>
+        <p class="section-tag">${escapeHtml(data.invitation.label)}</p>
+        <h2 class="section-title">${escapeHtml(data.invitation.title)}</h2>
+        <div class="invitation-copy">
+          ${data.invitation.poem
+            .map((line) =>
+              line
+                ? `<p>${escapeHtml(line)}</p>`
+                : '<div class="invitation-copy__spacer" aria-hidden="true"></div>',
+            )
+            .join("")}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="schedule-card reveal" data-reveal>
+        <div class="schedule-card__intro">
+          <p class="section-tag">WEDDING DAY</p>
+          <h2 class="section-title">${escapeHtml(data.event.shortDate)}</h2>
+          <p class="schedule-card__text">${escapeHtml(data.event.displayDate)}</p>
+        </div>
+        ${renderCalendar(data.event.isoDate)}
+        <div class="countdown" aria-label="결혼식까지 남은 시간">
+          <div class="countdown__item">
+            <span class="countdown__label">DAYS</span>
+            <strong id="countdown-days">000</strong>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__item">
+            <span class="countdown__label">HOUR</span>
+            <strong id="countdown-hours">00</strong>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__item">
+            <span class="countdown__label">MIN</span>
+            <strong id="countdown-minutes">00</strong>
+          </div>
+          <div class="countdown__separator">:</div>
+          <div class="countdown__item">
+            <span class="countdown__label">SEC</span>
+            <strong id="countdown-seconds">00</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="location-card reveal" data-reveal>
+        <div class="location-card__heading">
+          <p class="section-tag">LOCATION</p>
+          <h2 class="section-title">${escapeHtml(data.event.venue)}</h2>
+          <p class="location-card__address">
+            ${escapeHtml(data.event.address)}<br />
+            ${escapeHtml(data.event.addressLegacy)}
+          </p>
+        </div>
+
+        <div class="location-card__actions">
+          <a class="pill-button pill-button--dark" href="${data.maps.naver}" target="_blank" rel="noreferrer">네이버지도</a>
+          <a class="pill-button" href="${data.maps.kakao}" target="_blank" rel="noreferrer">카카오맵</a>
+          <button class="pill-button" type="button" data-copy="${escapeHtml(data.event.address)}">주소 복사</button>
+        </div>
+
+        <div class="info-grid">
+          ${renderInfoCards(data.informationCards)}
+        </div>
+
+        <div class="directions-grid">
+          ${renderDirections(data.directions)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="gallery-panel reveal" data-reveal>
+        <p class="section-tag">GALLERY</p>
+        <h2 class="section-title">우리의 순간을 담았어요</h2>
+        <div class="gallery-grid">
+          ${renderGallery(data.gallery)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="utility-grid">
+        <div class="utility-card reveal" data-reveal>
+          <p class="section-tag">CONTACT</p>
+          <h2 class="section-title">편하게 연락 주세요</h2>
+          <div class="contact-grid">
+            ${renderContacts(data.contacts)}
+          </div>
+        </div>
+
+        <div class="utility-card reveal" data-reveal>
+          <p class="section-tag">ACCOUNT</p>
+          <h2 class="section-title">마음 전하실 곳</h2>
+          <p class="utility-card__copy">${escapeHtml(data.account.message)}</p>
+          <div class="account-box">
+            <strong>${escapeHtml(`${data.account.bank} ${data.account.number}`)}</strong>
+            <span>예금주 ${escapeHtml(data.account.holder)}</span>
+          </div>
+          <div class="utility-card__actions">
+            <button
+              class="pill-button pill-button--dark"
+              type="button"
+              data-copy="${escapeHtml(`${data.account.bank} ${data.account.number} (${data.account.holder})`)}"
+            >
+              계좌번호 복사
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--closing">
+      <div class="closing-card reveal" data-reveal>
+        <div class="closing-card__quote">
+          ${data.quote.lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+        </div>
+        <div class="closing-card__share">
+          <p class="section-tag">SHARE</p>
+          <h2 class="section-title">${escapeHtml(data.sharing.title)}</h2>
+          <p class="utility-card__copy">${escapeHtml(data.sharing.description)}</p>
+          <div class="utility-card__actions">
+            <button class="pill-button pill-button--dark" type="button" data-action="share">링크 공유</button>
+            <button class="pill-button" type="button" data-action="copy-link">링크 복사</button>
+            <button class="pill-button" type="button" data-action="calendar">캘린더 추가</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>${escapeHtml(data.couple.title)}의 결혼식에 함께해 주셔서 감사합니다.</p>
+      <p class="footer__meta">
+        Music:
+        <a href="${data.music.sourceUrl}" target="_blank" rel="noreferrer">${escapeHtml(data.music.title)}</a>
+        by ${escapeHtml(data.music.artist)}
+        ·
+        <a href="${data.music.licenseUrl}" target="_blank" rel="noreferrer">CC BY 3.0</a>
+      </p>
+    </footer>
+  `;
+}
+
+function updateCountdown(dateString) {
+  const target = new Date(dateString).getTime();
+  const now = Date.now();
+  const difference = Math.max(target - now, 0);
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((difference / (1000 * 60)) % 60);
+  const seconds = Math.floor((difference / 1000) % 60);
+
+  document.querySelector("#countdown-days").textContent = String(days).padStart(3, "0");
+  document.querySelector("#countdown-hours").textContent = String(hours).padStart(2, "0");
+  document.querySelector("#countdown-minutes").textContent = String(minutes).padStart(2, "0");
+  document.querySelector("#countdown-seconds").textContent = String(seconds).padStart(2, "0");
+}
+
+function startCountdown(dateString) {
+  window.clearInterval(countdownTimerId);
+  updateCountdown(dateString);
+  countdownTimerId = window.setInterval(() => updateCountdown(dateString), 1000);
+}
+
+function createCalendarFile(data) {
+  const eventStart = new Date(data.event.isoDate);
+  const eventEnd = new Date(eventStart.getTime() + 2 * 60 * 60 * 1000);
+  const toIcsDate = (date) =>
+    date
+      .toISOString()
+      .replaceAll("-", "")
+      .replaceAll(":", "")
+      .replace(/\.\d{3}Z$/, "Z");
+
+  const content = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//mobile-wedding-invitation//KO",
+    "BEGIN:VEVENT",
+    `UID:${Date.now()}@mobile-wedding-invitation`,
+    `DTSTAMP:${toIcsDate(new Date())}`,
+    `DTSTART:${toIcsDate(eventStart)}`,
+    `DTEND:${toIcsDate(eventEnd)}`,
+    `SUMMARY:${data.couple.groom} ${data.couple.bride} 결혼식`,
+    `LOCATION:${data.event.venue} ${data.event.address}`,
+    `DESCRIPTION:${data.event.displayDate} / ${data.event.venue}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+
+  const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "youngchan-seunghyeon-wedding.ics";
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function openLightbox(item) {
+  lightboxImage.src = item.src;
+  lightboxImage.alt = item.alt;
+  lightboxCaption.textContent = item.caption;
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.hidden = true;
+  lightboxImage.src = "";
+  lightboxImage.alt = "";
+  lightboxCaption.textContent = "";
+  document.body.style.overflow = "";
+}
+
+function updateMusicButton(isPlaying) {
+  const button = document.querySelector("[data-action='music-toggle']");
+  if (!button) {
+    return;
+  }
+
+  button.classList.toggle("is-playing", isPlaying);
+  button.setAttribute("aria-pressed", String(isPlaying));
+  button.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
+  const label = button.querySelector(".music-fab__label");
+  if (label) {
+    label.textContent = isPlaying ? "ON" : "BGM";
+  }
+}
+
+function setupMusic(music) {
+  musicPlayer.src = music.src;
+  musicPlayer.volume = 0.34;
+  updateMusicButton(false);
+}
+
+async function toggleMusic(music) {
+  if (!musicPlayer.src) {
+    return;
+  }
+
+  if (musicPlayer.paused) {
+    try {
+      await musicPlayer.play();
+      updateMusicButton(true);
+      showToast("배경음악을 재생해요.");
+    } catch {
+      showToast("음악 재생을 시작하지 못했어요.");
+    }
+    return;
+  }
+
+  musicPlayer.pause();
+  updateMusicButton(false);
+  showToast("배경음악을 멈췄어요.");
+}
+
+function setupRevealAnimations() {
+  const revealed = document.querySelectorAll("[data-reveal]");
+
+  if (!("IntersectionObserver" in window)) {
+    revealed.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.16 },
+  );
+
+  revealed.forEach((element) => observer.observe(element));
+}
+
+function setupEventHandlers(data) {
+  app.addEventListener("click", async (event) => {
+    const copyTrigger = event.target.closest("[data-copy]");
+    if (copyTrigger) {
+      const value = copyTrigger.getAttribute("data-copy");
+      if (value) {
+        await copyText(value, "복사했어요.");
+      }
+      return;
+    }
+
+    const galleryTrigger = event.target.closest("[data-gallery-index]");
+    if (galleryTrigger) {
+      const item = data.gallery[Number(galleryTrigger.getAttribute("data-gallery-index"))];
+      if (item) {
+        openLightbox(item);
+      }
+      return;
+    }
+
+    const actionTrigger = event.target.closest("[data-action]");
+    if (!actionTrigger) {
+      return;
+    }
+
+    const action = actionTrigger.getAttribute("data-action");
+
+    if (action === "music-toggle") {
+      await toggleMusic(data.music);
+      return;
+    }
+
+    if (action === "copy-link") {
+      await copyText(window.location.href, "링크를 복사했어요.");
+      return;
+    }
+
+    if (action === "share") {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: `${data.couple.groom} · ${data.couple.bride} 결혼합니다`,
+            text: `${data.event.displayDate} ${data.event.venue}`,
+            url: window.location.href,
+          });
+        } catch {
+          return;
+        }
+      } else {
+        await copyText(window.location.href, "공유 기능 대신 링크를 복사했어요.");
+      }
+      return;
+    }
+
+    if (action === "calendar") {
+      createCalendarFile(data);
+      showToast("캘린더 파일을 준비했어요.");
+    }
+  });
+
+  lightbox.addEventListener("click", (event) => {
+    if (event.target.closest("[data-lightbox-close]")) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !lightbox.hidden) {
+      closeLightbox();
+    }
+  });
+}
+
+function renderApp(data) {
+  app.innerHTML = createPageMarkup(data);
+  setupMusic(data.music);
+  setupRevealAnimations();
+  setupEventHandlers(data);
+  startCountdown(data.event.isoDate);
+}
+
+renderApp(invitationData);

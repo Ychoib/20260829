@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>최영찬 · 이승현 모바일 청첩장</title>
+    <meta
+      name="description"
+      content="최영찬, 이승현의 결혼식에 소중한 분들을 초대합니다. 2026년 8월 29일 토요일 오후 1시 30분, 잠실 더 컨벤션 3층 비스타홀."
+    />
+    <meta name="theme-color" content="#f8f4ee" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="최영찬 · 이승현 결혼합니다" />
+    <meta
+      property="og:description"
+      content="2026년 8월 29일 토요일 오후 1시 30분, 잠실 더 컨벤션 3층 비스타홀"
+    />
+    <meta property="og:image" content="./assets/images/og-share.jpg" />
+    <meta property="og:locale" content="ko_KR" />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Pinyon+Script&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <main id="app" class="invitation-app" aria-live="polite"></main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <audio id="bg-music" loop preload="metadata"></audio>
+
+    <div id="lightbox" class="lightbox" hidden>
+      <button class="lightbox__close" type="button" aria-label="갤러리 닫기" data-lightbox-close>
+        ×
+      </button>
+      <div class="lightbox__backdrop" data-lightbox-close></div>
+      <figure class="lightbox__figure">
+        <img id="lightbox-image" src="" alt="" />
+        <figcaption id="lightbox-caption"></figcaption>
+      </figure>
+    </div>
+
+    <noscript>
+      <div class="noscript-message">
+        자바스크립트가 비활성화되어 있어 청첩장을 표시할 수 없습니다.
+      </div>
+    </noscript>
+
+    <script type="module" src="./src/app.js?v=20260318b"></script>
+  </body>
+</html>

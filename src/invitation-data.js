@@ -1,0 +1,182 @@
+export const invitationData = {
+  couple: {
+    groom: "최영찬",
+    bride: "이승현",
+    title: "최영찬 · 이승현",
+    scriptTitle: "Wedding Day",
+    invitationLine: "저희의 시작을 함께 축복해 주세요",
+    storyTitle: "여름의 끝자락, 저희 결혼합니다",
+    storyText:
+      "서로의 하루를 함께하며 같은 곳을 바라보게 된 저희가 소중한 분들을 모시고 새로운 시작을 약속하려 합니다. 기쁜 날, 따뜻한 마음으로 함께해 주시면 큰 기쁨이 되겠습니다.",
+  },
+  event: {
+    isoDate: "2026-08-29T13:30:00+09:00",
+    displayDate: "2026년 8월 29일 토요일 오후 1시 30분",
+    shortDate: "2026.08.29",
+    venue: "잠실 더 컨벤션 3층 비스타홀",
+    address: "서울 송파구 올림픽로 319 3층",
+    addressLegacy: "구주소 송파구 신천동 11-7",
+    monthLabel: "AUG",
+    dayLabel: "29TH",
+    yearLabel: "2026",
+  },
+  hero: {
+    image: "./assets/images/hero.jpg",
+    alt: "밝은 정원 속에서 함께 서 있는 최영찬과 이승현",
+    label: "Save the Date",
+  },
+  spotlight: {
+    label: "EDITORIAL NOTE",
+    title: "깔끔하지만 사랑스럽게",
+    text: "여백이 많은 종이 위에 두 사람의 이름을 조심스럽게 적어두는 마음으로, 차분하고 단정한 무드 안에 귀여운 온기를 담았습니다.",
+    image: "./assets/images/gallery-04.jpg",
+    alt: "꽃 배경 속에 함께 서 있는 두 사람",
+  },
+  invitation: {
+    label: "INVITATION",
+    title: "소중한 분들을 초대합니다",
+    poem: [
+      "서로의 하루를 함께하며",
+      "같은 곳을 바라보게 된 저희가",
+      "소중한 분들을 모시고",
+      "새로운 시작을 약속하려 합니다.",
+      "",
+      "기쁜 날, 따뜻한 마음으로 함께해 주시면",
+      "큰 기쁨이 되겠습니다.",
+    ],
+  },
+  informationCards: [
+    {
+      title: "DATE",
+      heading: "예식 일시",
+      lines: ["2026년 8월 29일 토요일", "오후 1시 30분"],
+    },
+    {
+      title: "PLACE",
+      heading: "예식 장소",
+      lines: ["잠실 더 컨벤션 3층 비스타홀", "서울 송파구 올림픽로 319 3층"],
+    },
+    {
+      title: "PHONE",
+      heading: "연락처",
+      lines: ["신랑 010-8514-7246", "신부 010-2967-6266"],
+    },
+  ],
+  directions: [
+    {
+      title: "지하철 이용 시",
+      lines: ["2호선 잠실역 8번출구 약 300m", "8호선 잠실역 9번 출구 약 30m"],
+    },
+    {
+      title: "버스 이용 시",
+      lines: [
+        "일반버스 16, 32, 100, 101",
+        "간선 310, 341, 360",
+        "지선 2311, 3411",
+        "광역·직행버스 1000, 1100, 1700",
+        "공항버스 6000, 6006",
+      ],
+    },
+    {
+      title: "자가용 이용 시",
+      lines: ["신주소 송파구 올림픽로 319", "구주소 송파구 신천동 11-7"],
+    },
+    {
+      title: "주차 안내",
+      lines: ["교통회관 지상, 지하 주차장 이용"],
+    },
+  ],
+  maps: {
+    searchText: "잠실 더 컨벤션 3층 비스타홀",
+    naver: "https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    kakao: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    google: "https://www.google.com/maps/search/?api=1&query=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+  },
+  contacts: [
+    {
+      role: "GROOM",
+      name: "최영찬",
+      phone: "010-8514-7246",
+      buttonLabel: "신랑에게 연락하기",
+    },
+    {
+      role: "BRIDE",
+      name: "이승현",
+      phone: "010-2967-6266",
+      buttonLabel: "신부에게 연락하기",
+    },
+  ],
+  account: {
+    bank: "우리은행",
+    number: "1002-753-424111",
+    holder: "최영찬",
+    message: "멀리서도 전해주시는 따뜻한 마음에 감사드립니다.",
+  },
+  gallery: [
+    {
+      src: "./assets/images/gallery-04.jpg",
+      alt: "꽃 배경 속에서 함께 서 있는 두 사람",
+      caption: "floral glow",
+      layout: "featured",
+    },
+    {
+      src: "./assets/images/gallery-02.jpg",
+      alt: "밝은 실내에서 서로를 바라보는 두 사람",
+      caption: "minimal moment",
+    },
+    {
+      src: "./assets/images/gallery-08.jpg",
+      alt: "문 앞에 앉아 장난스럽게 포즈를 취한 두 사람",
+      caption: "cute pause",
+    },
+    {
+      src: "./assets/images/gallery-06.jpg",
+      alt: "창가에 앉아 있는 이승현",
+      caption: "bride portrait",
+    },
+    {
+      src: "./assets/images/gallery-05.jpg",
+      alt: "정원 벤치에 앉아 있는 최영찬",
+      caption: "groom portrait",
+    },
+    {
+      src: "./assets/images/gallery-03.jpg",
+      alt: "푸른 정원 앞에 서 있는 이승현",
+      caption: "soft greenery",
+    },
+    {
+      src: "./assets/images/gallery-07.jpg",
+      alt: "도어 앞에서 다른 스타일링으로 서 있는 두 사람",
+      caption: "soft styling",
+    },
+    {
+      src: "./assets/images/gallery-01.jpg",
+      alt: "흰 배경 앞에서 손을 잡고 서 있는 두 사람",
+      caption: "clean portrait",
+    },
+    {
+      src: "./assets/images/gallery-09.jpg",
+      alt: "한옥 앞에 서 있는 이승현",
+      caption: "warm sunlight",
+    },
+  ],
+  quote: {
+    lines: [
+      "장담하건대, 세상이 다 여름이어도",
+      "저희의 하루는 늘 봄처럼 따뜻하고",
+      "가끔은 햇살처럼 반짝일 것입니다.",
+    ],
+  },
+  sharing: {
+    title: "함께해 주셔서 감사합니다",
+    description: "소중한 분들께 링크를 전해 주세요. 모바일에서 바로 공유하실 수 있도록 준비했어요.",
+  },
+  music: {
+    src: "./assets/audio/wedding-theme.mp3",
+    title: "There is Romance",
+    artist: "Kevin MacLeod",
+    attribution: "Music: There is Romance, Kevin MacLeod (incompetech.com), CC BY 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/3.0/",
+    sourceUrl: "https://incompetech.com/music/royalty-free/mp3-royaltyfree/There%20is%20Romance.mp3",
+  },
+};
