@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-naver-address";
+import { invitationData } from "./invitation-data.js?v=20260328-naver-place";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
