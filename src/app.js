@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-naver-geocode";
+import { invitationData } from "./invitation-data.js?v=20260328-hero-script";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");

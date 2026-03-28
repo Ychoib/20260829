@@ -3,7 +3,7 @@ export const invitationData = {
     groom: "최영찬",
     bride: "이승현",
     title: "최영찬 · 이승현",
-    scriptTitle: "GETTING MARRIED",
+    scriptTitle: "Getting Married",
     invitationLine: "저희의 시작을 함께 축복해 주세요",
     storyTitle: "여름의 끝자락, 저희 결혼합니다",
     storyText:
