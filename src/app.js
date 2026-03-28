@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-mapapps";
+import { invitationData } from "./invitation-data.js?v=20260328-navermap";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -6,8 +6,10 @@ const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector("#lightbox-image");
 const lightboxCaption = document.querySelector("#lightbox-caption");
 const musicPlayer = document.querySelector("#bg-music");
+const runtimeConfig = window.__INVITATION_CONFIG__ ?? {};
 
 let countdownTimerId;
+let naverMapLoader;
 
 function escapeHtml(text) {
   return text
@@ -166,16 +168,32 @@ function renderMapLinks(items) {
   return items
     .map(
       (item) => `
-        <a
-          class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
-          href="${escapeHtml(item.url)}"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="${escapeHtml(item.label)} 열기"
-        >
-          <span class="pill-button__title">${escapeHtml(item.label)}</span>
-          <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
-        </a>
+        ${
+          item.type === "app"
+            ? `
+              <button
+                class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
+                type="button"
+                data-map-action="${escapeHtml(item.action)}"
+                aria-label="${escapeHtml(item.label)} 열기"
+              >
+                <span class="pill-button__title">${escapeHtml(item.label)}</span>
+                <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
+              </button>
+            `
+            : `
+              <a
+                class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
+                href="${escapeHtml(item.url)}"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="${escapeHtml(item.label)} 열기"
+              >
+                <span class="pill-button__title">${escapeHtml(item.label)}</span>
+                <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
+              </a>
+            `
+        }
       `,
     )
     .join("");
@@ -276,6 +294,16 @@ function createPageMarkup(data) {
           </p>
         </div>
 
+        <div class="location-map reveal" data-reveal>
+          <div
+            id="naver-map"
+            class="location-map__canvas"
+            role="img"
+            aria-label="${escapeHtml(`${data.event.venue} 네이버 지도`)}"
+          ></div>
+          <div class="location-map__fallback" data-map-fallback hidden></div>
+        </div>
+
         <div class="location-card__map-tools">
           <p class="section-tag">MAP APPS</p>
           <p class="location-card__map-note">${escapeHtml(data.maps.hint)}</p>
@@ -369,6 +397,149 @@ function createPageMarkup(data) {
       </p>
     </footer>
   `;
+}
+
+function isMobileDevice() {
+  return /android|iphone|ipad|ipod/i.test(window.navigator.userAgent);
+}
+
+function openExternalLink(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function openAppWithFallback({ appUrl, mobileFallbackUrl, desktopUrl, notice }) {
+  if (!appUrl) {
+    if (desktopUrl) {
+      openExternalLink(desktopUrl);
+    }
+    return;
+  }
+
+  if (!isMobileDevice()) {
+    openExternalLink(desktopUrl || mobileFallbackUrl || appUrl);
+    if (notice) {
+      showToast(notice);
+    }
+    return;
+  }
+
+  let fallbackTimerId;
+  const cleanup = () => {
+    window.clearTimeout(fallbackTimerId);
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+    window.removeEventListener("pagehide", cleanup);
+  };
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      cleanup();
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  window.addEventListener("pagehide", cleanup, { once: true });
+
+  fallbackTimerId = window.setTimeout(() => {
+    cleanup();
+    if (mobileFallbackUrl) {
+      window.location.href = mobileFallbackUrl;
+    }
+  }, 1400);
+
+  window.location.href = appUrl;
+}
+
+function setMapFallback(message, linkLabel, linkUrl) {
+  const mapCanvas = document.querySelector("#naver-map");
+  const fallback = document.querySelector("[data-map-fallback]");
+
+  if (!mapCanvas || !fallback) {
+    return;
+  }
+
+  mapCanvas.hidden = true;
+  fallback.hidden = false;
+  fallback.innerHTML = `
+    <div class="location-map__empty">
+      <p>${escapeHtml(message)}</p>
+      ${
+        linkUrl
+          ? `<a class="location-map__link" href="${escapeHtml(linkUrl)}" target="_blank" rel="noreferrer">${escapeHtml(linkLabel)}</a>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+function loadNaverMapScript(clientId) {
+  if (window.naver?.maps) {
+    return Promise.resolve(window.naver);
+  }
+
+  if (naverMapLoader) {
+    return naverMapLoader;
+  }
+
+  naverMapLoader = new Promise((resolve, reject) => {
+    window.__initWeddingNaverMap = () => resolve(window.naver);
+
+    const script = document.createElement("script");
+    script.id = "naver-map-sdk";
+    script.async = true;
+    script.src =
+      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}` +
+      "&callback=__initWeddingNaverMap";
+    script.onerror = () => reject(new Error("Failed to load NAVER Maps API"));
+    document.head.append(script);
+  });
+
+  return naverMapLoader;
+}
+
+async function setupNaverMap(data) {
+  const mapCanvas = document.querySelector("#naver-map");
+  if (!mapCanvas) {
+    return;
+  }
+
+  const clientId = runtimeConfig.naverMapClientId?.trim();
+  if (!clientId) {
+    setMapFallback(
+      "네이버 지도 API 연결 준비는 끝났어요. Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
+      "네이버지도에서 보기",
+      data.maps.naver,
+    );
+    return;
+  }
+
+  try {
+    await loadNaverMapScript(clientId);
+
+    const center = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
+    const map = new window.naver.maps.Map("naver-map", {
+      center,
+      zoom: data.maps.coordinates.zoom,
+      scaleControl: false,
+      mapDataControl: false,
+      logoControl: false,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: window.naver.maps.Position.TOP_RIGHT,
+      },
+    });
+
+    new window.naver.maps.Marker({
+      position: center,
+      map,
+      title: data.event.venue,
+    });
+  } catch {
+    setMapFallback(
+      "지도를 불러오지 못했어요. 네이버지도에서 바로 위치를 확인하실 수 있어요.",
+      "네이버지도에서 보기",
+      data.maps.naver,
+    );
+  }
 }
 
 function updateCountdown(dateString) {
@@ -528,6 +699,37 @@ function setupEventHandlers(data) {
       return;
     }
 
+    const mapTrigger = event.target.closest("[data-map-action]");
+    if (mapTrigger) {
+      const action = mapTrigger.getAttribute("data-map-action");
+
+      if (action === "open-kakao-map-app") {
+        const kakaoMap = data.maps.apps.find((item) => item.action === action);
+        if (kakaoMap) {
+          openAppWithFallback({
+            appUrl: kakaoMap.appUrl,
+            mobileFallbackUrl: kakaoMap.mobileFallbackUrl,
+            desktopUrl: kakaoMap.desktopUrl,
+            notice: "모바일에서는 카카오맵 앱으로 바로 이어져요.",
+          });
+        }
+        return;
+      }
+
+      if (action === "open-tmap-app") {
+        const tmap = data.maps.apps.find((item) => item.action === action);
+        if (tmap) {
+          openAppWithFallback({
+            appUrl: tmap.appUrl,
+            mobileFallbackUrl: tmap.mobileFallbackUrl,
+            desktopUrl: tmap.desktopUrl,
+            notice: "모바일에서는 티맵 앱으로 길찾기를 시작해요.",
+          });
+        }
+        return;
+      }
+    }
+
     const actionTrigger = event.target.closest("[data-action]");
     if (!actionTrigger) {
       return;
@@ -583,6 +785,7 @@ function setupEventHandlers(data) {
 
 function renderApp(data) {
   app.innerHTML = createPageMarkup(data);
+  setupNaverMap(data);
   setupMusic(data.music);
   setupRevealAnimations();
   setupEventHandlers(data);

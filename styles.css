@@ -445,6 +445,52 @@ a {
   margin-top: 26px;
 }
 
+.location-map {
+  margin-top: 30px;
+}
+
+.location-map__canvas,
+.location-map__fallback {
+  min-height: 248px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(245, 239, 231, 0.94)),
+    var(--bg-soft);
+}
+
+.location-map__canvas {
+  overflow: hidden;
+}
+
+.location-map__empty {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  min-height: 248px;
+  padding: 24px;
+  text-align: center;
+}
+
+.location-map__empty p {
+  margin: 0;
+  max-width: 18rem;
+  color: var(--text-soft);
+  font-size: 0.94rem;
+  line-height: 1.92;
+  word-break: keep-all;
+  text-wrap: pretty;
+}
+
+.location-map__link {
+  color: var(--accent-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
 .location-card__map-note {
   margin: 0;
   color: var(--text-soft);
