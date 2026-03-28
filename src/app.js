@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-hero-script";
+import { invitationData } from "./invitation-data.js?v=20260328-hero-script-map";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -488,9 +488,7 @@ function loadNaverMapScript(clientId) {
     const script = document.createElement("script");
     script.id = "naver-map-sdk";
     script.async = true;
-    script.src =
-      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}` +
-      "&submodules=geocoder&callback=__initWeddingNaverMap";
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}&callback=__initWeddingNaverMap`;
     script.onerror = () => reject(new Error("Failed to load NAVER Maps API"));
     document.head.append(script);
   });
@@ -516,9 +514,9 @@ async function setupNaverMap(data) {
 
   try {
     await loadNaverMapScript(clientId);
-    const fallbackCenter = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
+    const center = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
     const map = new window.naver.maps.Map("naver-map", {
-      center: fallbackCenter,
+      center,
       zoom: data.maps.coordinates.zoom,
       scaleControl: false,
       mapDataControl: false,
@@ -529,50 +527,11 @@ async function setupNaverMap(data) {
       },
     });
 
-    const createMarker = (position) =>
-      new window.naver.maps.Marker({
-        position,
-        map,
-        title: data.event.venue,
-      });
-
-    let markerPosition = fallbackCenter;
-
-    if (window.naver.maps.Service?.geocode) {
-      try {
-        const geocodeResult = await new Promise((resolve, reject) => {
-          window.naver.maps.Service.geocode({ address: data.maps.searchText || data.event.address }, (status, response) => {
-            if (status !== window.naver.maps.Service.Status.OK) {
-              reject(new Error(`Geocode failed: ${status}`));
-              return;
-            }
-
-            const point = response?.result?.items?.[0]?.point || response?.v2?.addresses?.[0];
-            if (!point) {
-              reject(new Error("No geocode results"));
-              return;
-            }
-
-            const x = Number(point.x ?? point.longitude);
-            const y = Number(point.y ?? point.latitude);
-
-            if (!Number.isFinite(x) || !Number.isFinite(y)) {
-              reject(new Error("Invalid geocode coordinates"));
-              return;
-            }
-
-            resolve({ x, y });
-          });
-        });
-
-        markerPosition = new window.naver.maps.LatLng(geocodeResult.y, geocodeResult.x);
-        map.setCenter(markerPosition);
-      } catch (error) {
-        console.warn("NAVER geocode fallback:", error);
-      }
-    }
-
-    createMarker(markerPosition);
+    new window.naver.maps.Marker({
+      position: center,
+      map,
+      title: data.event.venue,
+    });
   } catch {
     setMapFallback(
       "지도를 불러오지 못했어요. 네이버지도에서 바로 위치를 확인하실 수 있어요.",
