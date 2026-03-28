@@ -5,7 +5,7 @@
 ## GitHub Pages로 배포하기
 
 이 프로젝트는 정적 사이트라서 GitHub Pages에 바로 배포할 수 있습니다.
-이미 `.github/workflows/deploy-pages.yml`이 들어 있어 `main` 브랜치에 push하면 자동 배포됩니다.
+현재 설정은 `main` 브랜치 루트를 바로 배포하는 가장 단순한 방식입니다.
 
 ### 1. GitHub에서 빈 저장소 만들기
 
@@ -34,10 +34,9 @@ git push -u origin main
 
 push 후 GitHub 저장소에서 아래를 확인하면 됩니다.
 
-- `Actions` 탭에서 `Deploy static site to GitHub Pages` 워크플로 실행 여부 확인
 - `Settings > Pages`에서 배포 주소 확인
 
-대부분은 자동으로 동작하지만, 첫 배포가 보이지 않으면 `Settings > Pages`에서 소스를 `GitHub Actions`로 바꿔주세요.
+배포 소스는 `Deploy from a branch`, 브랜치는 `main`, 폴더는 `/ (root)` 기준으로 맞추면 됩니다.
 
 ## 짧게 쓰는 도메인 붙이기
 
