@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-naver-place";
+import { invitationData } from "./invitation-data.js?v=20260328-naver-geocode";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -10,6 +10,7 @@ const runtimeConfig = window.__INVITATION_CONFIG__ ?? {};
 
 let countdownTimerId;
 let naverMapLoader;
+let musicAutoplayCleanup;
 
 function escapeHtml(text) {
   return text
@@ -472,7 +473,7 @@ function setMapFallback(message, linkLabel, linkUrl) {
   `;
 }
 
-function loadNaverMapScript(keyId) {
+function loadNaverMapScript(clientId) {
   if (window.naver?.maps) {
     return Promise.resolve(window.naver);
   }
@@ -488,8 +489,8 @@ function loadNaverMapScript(keyId) {
     script.id = "naver-map-sdk";
     script.async = true;
     script.src =
-      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(keyId)}` +
-      "&callback=__initWeddingNaverMap";
+      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}` +
+      "&submodules=geocoder&callback=__initWeddingNaverMap";
     script.onerror = () => reject(new Error("Failed to load NAVER Maps API"));
     document.head.append(script);
   });
@@ -503,10 +504,10 @@ async function setupNaverMap(data) {
     return;
   }
 
-  const keyId = (runtimeConfig.naverMapKeyId || runtimeConfig.naverMapClientId || "").trim();
-  if (!keyId) {
+  const clientId = (runtimeConfig.naverMapClientId || runtimeConfig.naverMapKeyId || "").trim();
+  if (!clientId) {
     setMapFallback(
-      "네이버 지도 API 연결 준비는 끝났어요. Key ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
+      "네이버 지도 API 연결 준비는 끝났어요. Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
       "네이버지도에서 보기",
       data.maps.naver,
     );
@@ -514,11 +515,10 @@ async function setupNaverMap(data) {
   }
 
   try {
-    await loadNaverMapScript(keyId);
-
-    const center = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
+    await loadNaverMapScript(clientId);
+    const fallbackCenter = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
     const map = new window.naver.maps.Map("naver-map", {
-      center,
+      center: fallbackCenter,
       zoom: data.maps.coordinates.zoom,
       scaleControl: false,
       mapDataControl: false,
@@ -529,11 +529,50 @@ async function setupNaverMap(data) {
       },
     });
 
-    new window.naver.maps.Marker({
-      position: center,
-      map,
-      title: data.event.venue,
-    });
+    const createMarker = (position) =>
+      new window.naver.maps.Marker({
+        position,
+        map,
+        title: data.event.venue,
+      });
+
+    let markerPosition = fallbackCenter;
+
+    if (window.naver.maps.Service?.geocode) {
+      try {
+        const geocodeResult = await new Promise((resolve, reject) => {
+          window.naver.maps.Service.geocode({ address: data.maps.searchText || data.event.address }, (status, response) => {
+            if (status !== window.naver.maps.Service.Status.OK) {
+              reject(new Error(`Geocode failed: ${status}`));
+              return;
+            }
+
+            const point = response?.result?.items?.[0]?.point || response?.v2?.addresses?.[0];
+            if (!point) {
+              reject(new Error("No geocode results"));
+              return;
+            }
+
+            const x = Number(point.x ?? point.longitude);
+            const y = Number(point.y ?? point.latitude);
+
+            if (!Number.isFinite(x) || !Number.isFinite(y)) {
+              reject(new Error("Invalid geocode coordinates"));
+              return;
+            }
+
+            resolve({ x, y });
+          });
+        });
+
+        markerPosition = new window.naver.maps.LatLng(geocodeResult.y, geocodeResult.x);
+        map.setCenter(markerPosition);
+      } catch (error) {
+        console.warn("NAVER geocode fallback:", error);
+      }
+    }
+
+    createMarker(markerPosition);
   } catch {
     setMapFallback(
       "지도를 불러오지 못했어요. 네이버지도에서 바로 위치를 확인하실 수 있어요.",
@@ -639,16 +678,82 @@ function updateMusicButton(isPlaying) {
   }
 }
 
+function clearMusicAutoplayFallback() {
+  if (!musicAutoplayCleanup) {
+    return;
+  }
+
+  musicAutoplayCleanup();
+  musicAutoplayCleanup = null;
+}
+
+function registerMusicAutoplayFallback() {
+  if (musicAutoplayCleanup) {
+    return;
+  }
+
+  const attemptPlayback = async (event) => {
+    if (event?.target?.closest?.("[data-action='music-toggle']")) {
+      return;
+    }
+
+    clearMusicAutoplayFallback();
+
+    try {
+      await musicPlayer.play();
+      updateMusicButton(true);
+    } catch {
+      updateMusicButton(false);
+    }
+  };
+
+  const onPointerDown = (event) => {
+    void attemptPlayback(event);
+  };
+  const onKeyDown = () => {
+    void attemptPlayback();
+  };
+
+  musicAutoplayCleanup = () => {
+    window.removeEventListener("pointerdown", onPointerDown, true);
+    window.removeEventListener("touchstart", onPointerDown, true);
+    document.removeEventListener("keydown", onKeyDown, true);
+  };
+
+  window.addEventListener("pointerdown", onPointerDown, true);
+  window.addEventListener("touchstart", onPointerDown, true);
+  document.addEventListener("keydown", onKeyDown, true);
+}
+
 function setupMusic(music) {
   musicPlayer.src = music.src;
   musicPlayer.volume = 0.34;
+  musicPlayer.autoplay = true;
+  musicPlayer.playsInline = true;
   updateMusicButton(false);
 }
 
-async function toggleMusic(music) {
+async function attemptAutoPlayMusic() {
   if (!musicPlayer.src) {
     return;
   }
+
+  try {
+    await musicPlayer.play();
+    clearMusicAutoplayFallback();
+    updateMusicButton(true);
+  } catch {
+    updateMusicButton(false);
+    registerMusicAutoplayFallback();
+  }
+}
+
+async function toggleMusic() {
+  if (!musicPlayer.src) {
+    return;
+  }
+
+  clearMusicAutoplayFallback();
 
   if (musicPlayer.paused) {
     try {
@@ -748,7 +853,7 @@ function setupEventHandlers(data) {
     const action = actionTrigger.getAttribute("data-action");
 
     if (action === "music-toggle") {
-      await toggleMusic(data.music);
+      await toggleMusic();
       return;
     }
 
@@ -797,6 +902,7 @@ function renderApp(data) {
   app.innerHTML = createPageMarkup(data);
   setupNaverMap(data);
   setupMusic(data.music);
+  void attemptAutoPlayMusic();
   setupRevealAnimations();
   setupEventHandlers(data);
   startCountdown(data.event.isoDate);
