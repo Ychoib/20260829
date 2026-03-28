@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-navermap";
+import { invitationData } from "./invitation-data.js?v=20260328-calendar";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -76,7 +76,7 @@ function buildCalendar(dateString) {
 }
 
 function renderCalendar(dateString) {
-  const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
   const cells = buildCalendar(dateString);
 
   return `
@@ -210,8 +210,8 @@ function createPageMarkup(data) {
       <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" />
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="hero__content">
-        <p class="hero__label">${escapeHtml(data.hero.label)}</p>
-        <p class="hero__script">${escapeHtml(data.couple.scriptTitle)}</p>
+        ${data.hero.label ? `<p class="hero__label">${escapeHtml(data.hero.label)}</p>` : ""}
+        ${data.couple.scriptTitle ? `<p class="hero__script">${escapeHtml(data.couple.scriptTitle)}</p>` : ""}
         <h1 class="hero__names">${escapeHtml(data.couple.title)}</h1>
         <p class="hero__line">${escapeHtml(data.couple.invitationLine)}</p>
         <div class="hero__datebar">
@@ -255,8 +255,8 @@ function createPageMarkup(data) {
       <div class="schedule-card reveal" data-reveal>
         <div class="schedule-card__intro">
           <p class="section-tag">WEDDING DAY</p>
-          <h2 class="section-title">${escapeHtml(data.event.shortDate)}</h2>
-          <p class="schedule-card__text">${escapeHtml(data.event.displayDate)}</p>
+          <p class="schedule-card__date">${escapeHtml(data.event.shortDate)}</p>
+          <p class="schedule-card__text">${escapeHtml(data.event.dayOfWeekLabel)}</p>
         </div>
         ${renderCalendar(data.event.isoDate)}
         <div class="countdown" aria-label="결혼식까지 남은 시간">
@@ -280,6 +280,7 @@ function createPageMarkup(data) {
             <strong id="countdown-seconds">00</strong>
           </div>
         </div>
+        <p class="countdown__message" id="countdown-message"></p>
       </div>
     </section>
 
@@ -547,6 +548,7 @@ function updateCountdown(dateString) {
   const now = Date.now();
   const difference = Math.max(target - now, 0);
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+  const calendarDays = Math.max(Math.ceil(difference / (1000 * 60 * 60 * 24)), 0);
   const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((difference / (1000 * 60)) % 60);
   const seconds = Math.floor((difference / 1000) % 60);
@@ -555,6 +557,14 @@ function updateCountdown(dateString) {
   document.querySelector("#countdown-hours").textContent = String(hours).padStart(2, "0");
   document.querySelector("#countdown-minutes").textContent = String(minutes).padStart(2, "0");
   document.querySelector("#countdown-seconds").textContent = String(seconds).padStart(2, "0");
+
+  const message = document.querySelector("#countdown-message");
+  if (message) {
+    message.textContent =
+      difference === 0
+        ? `${invitationData.couple.title}의 결혼식이 바로 오늘입니다.`
+        : `${invitationData.couple.title}의 결혼식이 ${calendarDays}일 남았습니다.`;
+  }
 }
 
 function startCountdown(dateString) {

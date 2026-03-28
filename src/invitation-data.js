@@ -3,7 +3,7 @@ export const invitationData = {
     groom: "최영찬",
     bride: "이승현",
     title: "최영찬 · 이승현",
-    scriptTitle: "Wedding Day",
+    scriptTitle: "GETTING MARRIED",
     invitationLine: "저희의 시작을 함께 축복해 주세요",
     storyTitle: "여름의 끝자락, 저희 결혼합니다",
     storyText:
@@ -12,6 +12,7 @@ export const invitationData = {
   event: {
     isoDate: "2026-08-29T13:30:00+09:00",
     displayDate: "2026년 8월 29일 토요일 오후 1시 30분",
+    dayOfWeekLabel: "토요일 오후 1시 30분",
     shortDate: "2026.08.29",
     venue: "잠실 더 컨벤션 3층 비스타홀",
     address: "서울 송파구 올림픽로 319 3층",
@@ -23,7 +24,7 @@ export const invitationData = {
   hero: {
     image: "./assets/images/hero.jpg",
     alt: "밝은 정원 속에서 함께 서 있는 최영찬과 이승현",
-    label: "Save the Date",
+    label: "",
   },
   spotlight: {
     label: "EDITORIAL NOTE",

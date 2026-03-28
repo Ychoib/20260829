@@ -174,9 +174,9 @@ a {
 .hero__script {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 9vw, 3.15rem);
-  line-height: 1;
-  letter-spacing: 0.12em;
+  font-size: clamp(1.72rem, 7vw, 2.3rem);
+  line-height: 1.08;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
@@ -348,6 +348,7 @@ a {
 .schedule-card {
   display: grid;
   gap: 28px;
+  text-align: center;
 }
 
 .schedule-card__intro,
@@ -356,8 +357,31 @@ a {
   max-width: 26rem;
 }
 
+.schedule-card__intro {
+  margin: 0 auto;
+}
+
+.schedule-card__intro .section-tag {
+  margin-bottom: 18px;
+}
+
+.schedule-card__date {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.8rem, 6vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+}
+
+.schedule-card__text {
+  margin-top: 12px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
 .calendar {
-  padding: 18px 0 16px;
+  padding: 22px 0 18px;
   border-radius: 0;
   background: transparent;
   border-top: 1px solid var(--line);
@@ -372,11 +396,21 @@ a {
 }
 
 .calendar__weekdays {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   color: var(--text-faint);
-  font-size: 0.64rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.04em;
+}
+
+.calendar__weekdays span:first-child,
+.calendar__grid .calendar__cell:nth-child(7n + 1):not(.calendar__cell--blank) {
+  color: #d28a9a;
+}
+
+.calendar__weekdays span:last-child,
+.calendar__grid .calendar__cell:nth-child(7n):not(.calendar__cell--blank) {
+  color: #5f5b57;
 }
 
 .calendar__weekdays span,
@@ -389,8 +423,8 @@ a {
 .calendar__cell {
   aspect-ratio: 1;
   border-radius: 999px;
-  font-size: 0.92rem;
-  color: var(--text);
+  font-size: 1rem;
+  color: #5f5b57;
 }
 
 .calendar__cell--blank {
@@ -398,16 +432,18 @@ a {
 }
 
 .calendar__cell--active {
-  border: 1px solid rgba(39, 34, 32, 0.6);
-  color: var(--text);
-  background: rgba(39, 34, 32, 0.04);
+  border: 0;
+  color: #fffdfb !important;
+  background: #f3a8af;
   box-shadow: none;
 }
 
 .countdown {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: center;
+  column-gap: 24px;
+  row-gap: 8px;
   align-items: center;
   padding: 0;
   border-radius: 0;
@@ -417,28 +453,34 @@ a {
 
 .countdown__item {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   text-align: center;
 }
 
 .countdown__label {
   color: var(--text-faint);
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.1em;
 }
 
 .countdown__item strong {
-  font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-family: var(--font-body);
+  font-size: 2rem;
   font-weight: 400;
 }
 
 .countdown__separator {
-  margin-top: 8px;
-  color: rgba(113, 83, 59, 0.48);
-  font-family: var(--font-display);
+  display: none;
+}
+
+.countdown__message {
+  margin: -8px 0 0;
+  color: #5d5852;
   font-size: 1rem;
+  line-height: 1.9;
+  word-break: keep-all;
+  text-wrap: pretty;
 }
 
 .location-card__map-tools {
