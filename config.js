@@ -1,3 +1,3 @@
 window.__INVITATION_CONFIG__ = {
-  naverMapClientId: "76i32t7bi5",
+  naverMapClientId: "84vM8WwaUU3v7yfgVXaxPxBemJxC7saHSb1O9Dol",
 };
