@@ -88,14 +88,14 @@ export const invitationData = {
     },
   ],
   maps: {
-    searchText: "잠실 더 컨벤션 3층 비스타홀",
+    searchText: "서울 송파구 올림픽로 319 3층",
     hint: "지도를 바로 확인하고, 원하는 앱으로 길안내를 시작해 보세요.",
     coordinates: {
       lat: 37.5144117,
       lng: 127.103849,
       zoom: 16,
     },
-    naver: "https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    naver: "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%86%A1%ED%8C%8C%EA%B5%AC%20%EC%98%AC%EB%A6%BC%ED%94%BD%EB%A1%9C%20319%203%EC%B8%B5",
     kakao: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     tmap: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1038490&goaly=37.5144117&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     google: "https://www.google.com/maps/search/?api=1&query=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
@@ -104,7 +104,7 @@ export const invitationData = {
         label: "네이버지도",
         caption: "웹에서 보기",
         type: "link",
-        url: "https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        url: "https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%86%A1%ED%8C%8C%EA%B5%AC%20%EC%98%AC%EB%A6%BC%ED%94%BD%EB%A1%9C%20319%203%EC%B8%B5",
         emphasis: true,
       },
       {
