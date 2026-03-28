@@ -88,9 +88,29 @@ export const invitationData = {
   ],
   maps: {
     searchText: "잠실 더 컨벤션 3층 비스타홀",
+    hint: "익숙한 지도 앱으로 예식장을 바로 열어보세요.",
     naver: "https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     kakao: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    tmap: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1038490&goaly=37.5144117&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     google: "https://www.google.com/maps/search/?api=1&query=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    apps: [
+      {
+        label: "네이버지도",
+        caption: "장소 보기",
+        url: "https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        emphasis: true,
+      },
+      {
+        label: "카카오맵",
+        caption: "장소 보기",
+        url: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+      },
+      {
+        label: "티맵",
+        caption: "길찾기",
+        url: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1038490&goaly=37.5144117&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+      },
+    ],
   },
   contacts: [
     {

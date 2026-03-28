@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260318b";
+import { invitationData } from "./invitation-data.js?v=20260328-mapapps";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -162,6 +162,25 @@ function renderContacts(items) {
     .join("");
 }
 
+function renderMapLinks(items) {
+  return items
+    .map(
+      (item) => `
+        <a
+          class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
+          href="${escapeHtml(item.url)}"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="${escapeHtml(item.label)} 열기"
+        >
+          <span class="pill-button__title">${escapeHtml(item.label)}</span>
+          <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
+        </a>
+      `,
+    )
+    .join("");
+}
+
 function createPageMarkup(data) {
   return `
     <button class="music-fab" type="button" data-action="music-toggle" aria-pressed="false" aria-label="배경음악 재생">
@@ -257,10 +276,17 @@ function createPageMarkup(data) {
           </p>
         </div>
 
+        <div class="location-card__map-tools">
+          <p class="section-tag">MAP APPS</p>
+          <p class="location-card__map-note">${escapeHtml(data.maps.hint)}</p>
+        </div>
+
         <div class="location-card__actions">
-          <a class="pill-button pill-button--dark" href="${data.maps.naver}" target="_blank" rel="noreferrer">네이버지도</a>
-          <a class="pill-button" href="${data.maps.kakao}" target="_blank" rel="noreferrer">카카오맵</a>
-          <button class="pill-button" type="button" data-copy="${escapeHtml(data.event.address)}">주소 복사</button>
+          ${renderMapLinks(data.maps.apps)}
+          <button class="pill-button pill-button--map" type="button" data-copy="${escapeHtml(data.event.address)}">
+            <span class="pill-button__title">주소 복사</span>
+            <span class="pill-button__meta">텍스트 복사</span>
+          </button>
         </div>
 
         <div class="info-grid">
