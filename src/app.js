@@ -472,7 +472,7 @@ function setMapFallback(message, linkLabel, linkUrl) {
   `;
 }
 
-function loadNaverMapScript(clientId) {
+function loadNaverMapScript(keyId) {
   if (window.naver?.maps) {
     return Promise.resolve(window.naver);
   }
@@ -488,7 +488,7 @@ function loadNaverMapScript(clientId) {
     script.id = "naver-map-sdk";
     script.async = true;
     script.src =
-      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}` +
+      `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(keyId)}` +
       "&callback=__initWeddingNaverMap";
     script.onerror = () => reject(new Error("Failed to load NAVER Maps API"));
     document.head.append(script);
@@ -503,10 +503,10 @@ async function setupNaverMap(data) {
     return;
   }
 
-  const clientId = runtimeConfig.naverMapClientId?.trim();
-  if (!clientId) {
+  const keyId = (runtimeConfig.naverMapKeyId || runtimeConfig.naverMapClientId || "").trim();
+  if (!keyId) {
     setMapFallback(
-      "네이버 지도 API 연결 준비는 끝났어요. Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
+      "네이버 지도 API 연결 준비는 끝났어요. Key ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
       "네이버지도에서 보기",
       data.maps.naver,
     );
@@ -514,7 +514,7 @@ async function setupNaverMap(data) {
   }
 
   try {
-    await loadNaverMapScript(clientId);
+    await loadNaverMapScript(keyId);
 
     const center = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
     const map = new window.naver.maps.Map("naver-map", {
