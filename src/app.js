@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260329-account-groups";
+import { invitationData } from "./invitation-data.js?v=20260329-calendar-tone";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -345,7 +345,6 @@ function createPageMarkup(data) {
             <strong id="countdown-seconds">00</strong>
           </div>
         </div>
-        <p class="countdown__message" id="countdown-message"></p>
       </div>
     </section>
 
