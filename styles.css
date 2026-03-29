@@ -370,24 +370,6 @@ a {
   font-weight: 700;
 }
 
-.calendar-button {
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  margin-top: 22px;
-  padding: 0 16px;
-  border: 1px solid rgba(107, 87, 66, 0.14);
-  border-radius: 999px;
-  background: rgba(255, 252, 247, 0.88);
-  color: #6b5d50;
-  font: inherit;
-  font-size: 0.92rem;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(53, 37, 23, 0.04);
-}
-
 .gallery-panel__heading,
 .location-card__heading,
 .utility-card__heading {

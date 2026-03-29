@@ -281,7 +281,6 @@ function createPageMarkup(data) {
           <p class="schedule-card__text">${escapeHtml(data.event.dayOfWeekLabel)}</p>
         </div>
         ${renderCalendar(data.event.isoDate)}
-        <button class="calendar-button" type="button" data-action="calendar">캘린더 일정 추가하기</button>
       </div>
     </section>
 
