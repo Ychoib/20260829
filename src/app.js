@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260329-location-guide";
+import { invitationData } from "./invitation-data.js?v=20260329-kakao-place";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");

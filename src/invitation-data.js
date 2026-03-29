@@ -95,7 +95,7 @@ export const invitationData = {
       zoom: 16,
     },
     naver: "https://map.naver.com/p/entry/place/13355247?placePath=%2Fhome",
-    kakao: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+    kakao: "https://map.kakao.com/?itemId=17651361&t_src=share&t_ch=copy_url&t_obj=place",
     tmap: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     google: "https://www.google.com/maps/search/?api=1&query=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
     apps: [
@@ -137,12 +137,9 @@ export const invitationData = {
         brand: "kakao",
         type: "app",
         action: "open-kakao-map-app",
-        appUrl:
-          "kakaomap://search?q=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80&p=37.5157130,127.1057820",
-        mobileFallbackUrl:
-          "http://m.map.kakao.com/scheme/search?q=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80&p=37.5157130,127.1057820",
-        desktopUrl:
-          "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        appUrl: "kakaomap://place?id=17651361",
+        mobileFallbackUrl: "http://m.map.kakao.com/scheme/place?id=17651361",
+        desktopUrl: "https://map.kakao.com/?itemId=17651361&t_src=share&t_ch=copy_url&t_obj=place",
         notice: "모바일에서는 카카오맵 앱으로 바로 이어져요.",
       },
     ],
