@@ -484,10 +484,6 @@ a {
   text-wrap: pretty;
 }
 
-.location-card__map-tools {
-  margin-top: 26px;
-}
-
 .location-map {
   margin-top: 30px;
 }
@@ -534,20 +530,212 @@ a {
   text-transform: uppercase;
 }
 
-.location-card__map-note {
+.location-guide {
+  margin-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.guide-block {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-block--navigation {
+  padding-top: 32px;
+}
+
+.guide-block__title {
   margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.42rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.guide-block__description {
+  margin: 12px 0 0;
   color: var(--text-soft);
-  font-size: 0.92rem;
-  line-height: 1.88;
+  font-size: 0.97rem;
+  line-height: 1.86;
   word-break: keep-all;
   text-wrap: pretty;
 }
 
-.location-card__actions {
+.navigation-apps {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 18px;
-  margin-top: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.navigation-app {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 84px;
+  padding: 14px 10px;
+  border: 1px solid rgba(102, 83, 63, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 253, 249, 0.78);
+  box-shadow: 0 8px 24px rgba(47, 33, 20, 0.04);
+  color: var(--text);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.navigation-app:hover,
+.navigation-app:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(102, 83, 63, 0.22);
+  box-shadow: 0 12px 28px rgba(47, 33, 20, 0.06);
+}
+
+.navigation-app__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.navigation-app__label {
+  text-align: center;
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+.navigation-app--naver .navigation-app__icon {
+  background: #14b85e;
+  color: #ffffff;
+}
+
+.navigation-app--tmap .navigation-app__icon {
+  background: linear-gradient(135deg, #6f67ff 0%, #18d6ff 100%);
+  color: #ffffff;
+}
+
+.navigation-app--kakao .navigation-app__icon {
+  background: #ffe252;
+  color: #342a11;
+}
+
+.location-guide__copy {
+  appearance: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-soft);
+  font: inherit;
+  cursor: pointer;
+}
+
+.location-guide__copy-title {
+  color: var(--accent-deep);
+  font-size: 0.94rem;
+}
+
+.location-guide__copy-caption {
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.guide-blocks {
+  display: grid;
+}
+
+.guide-list {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--text-soft);
+  font-size: 0.97rem;
+  line-height: 1.85;
+  word-break: keep-all;
+  text-wrap: pretty;
+}
+
+.guide-item--plain {
+  gap: 0;
+}
+
+.guide-item__marker {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin-top: 0.44rem;
+  border-radius: 999px;
+  background: #9c907f;
+}
+
+.guide-item__marker--line2 {
+  background: #2ba65a;
+}
+
+.guide-item__marker--line8 {
+  background: #ef9cc2;
+}
+
+.guide-item__marker--bus-blue {
+  background: #2b63d9;
+}
+
+.guide-item__marker--bus-green {
+  background: #39a359;
+}
+
+.guide-item__marker--bus-gold {
+  background: #d4a23a;
+}
+
+.guide-item__marker--bus-gray {
+  background: #7c7c7a;
+}
+
+.guide-item__marker--bullet {
+  width: auto;
+  height: auto;
+  margin-top: 0.02rem;
+  border-radius: 0;
+  background: none;
+  color: var(--text-faint);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.guide-item__text {
+  flex: 1;
 }
 
 .utility-card__actions {
@@ -578,17 +766,6 @@ a {
     transform 180ms ease,
     color 180ms ease,
     border-color 180ms ease;
-}
-
-.pill-button--map {
-  width: 100%;
-  min-height: 62px;
-  padding: 10px 0 12px;
-  align-items: flex-start;
-  justify-content: flex-end;
-  gap: 4px;
-  flex-direction: column;
-  text-align: left;
 }
 
 .pill-button__title {
@@ -974,8 +1151,8 @@ a {
     right: max(calc((100vw - min(100vw, var(--max-width))) / 2 + 32px), 28px);
   }
 
-  .location-card__actions {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .navigation-apps {
+    gap: 12px;
   }
 }
 
@@ -997,8 +1174,8 @@ a {
     padding-right: 18px;
   }
 
-  .location-card__actions {
-    gap: 10px 14px;
+  .navigation-apps {
+    gap: 8px;
   }
 
   .hero__datebar {
@@ -1011,6 +1188,19 @@ a {
 
   .gallery-grid {
     gap: 16px 10px;
+  }
+
+  .navigation-app {
+    min-height: 78px;
+    padding: 12px 8px;
+  }
+
+  .navigation-app__label {
+    font-size: 0.88rem;
+  }
+
+  .guide-block__title {
+    font-size: 1.3rem;
   }
 }
 

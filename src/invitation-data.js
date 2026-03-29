@@ -16,7 +16,6 @@ export const invitationData = {
     shortDate: "2026.08.29",
     venue: "잠실 더 컨벤션 3층 비스타홀",
     address: "서울 송파구 올림픽로 319 3층",
-    addressLegacy: "구주소 송파구 신천동 11-7",
     monthLabel: "AUG",
     dayLabel: "29TH",
     yearLabel: "2026",
@@ -89,7 +88,7 @@ export const invitationData = {
   ],
   maps: {
     searchText: "서울 송파구 올림픽로 319 3층",
-    hint: "지도를 바로 확인하고, 원하는 앱으로 길안내를 시작해 보세요.",
+    navigationDescription: "원하시는 앱을 선택하시면 길안내가 시작됩니다.",
     coordinates: {
       lat: 37.515713,
       lng: 127.105782,
@@ -102,28 +101,82 @@ export const invitationData = {
     apps: [
       {
         label: "네이버지도",
-        caption: "웹에서 보기",
-        type: "link",
-        url: "https://map.naver.com/p/entry/place/13355247?placePath=%2Fhome",
-        emphasis: true,
-      },
-      {
-        label: "카카오맵 앱",
-        caption: "앱 열기",
+        caption: "앱에서 열기",
+        iconText: "N",
+        brand: "naver",
         type: "app",
-        action: "open-kakao-map-app",
-        appUrl: "kakaomap://look?p=37.5157130,127.1057820",
-        mobileFallbackUrl: "http://m.map.kakao.com/scheme/look?p=37.5157130,127.1057820",
-        desktopUrl: "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        action: "open-naver-map-app",
+        appUrl:
+          "navermaps://?menu=location&pinType=place&lat=37.5157130&lng=127.1057820&title=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        mobileFallbackUrl:
+          "http://map.naver.com/index.nhn?elng=127.1057820&elat=37.5157130&etext=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80&menu=route&pathType=0",
+        desktopUrl: "https://map.naver.com/p/entry/place/13355247?placePath=%2Fhome",
+        packageName: "com.nhn.android.nmap",
+        notice: "모바일에서는 네이버지도 앱으로 바로 이어져요.",
       },
       {
         label: "티맵",
         caption: "앱 길찾기",
+        iconText: "T",
+        brand: "tmap",
         type: "app",
         action: "open-tmap-app",
-        appUrl: "tmap://route?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
-        mobileFallbackUrl: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
-        desktopUrl: "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        appUrl:
+          "tmap://route?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        mobileFallbackUrl:
+          "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        desktopUrl:
+          "https://www.tmap.co.kr/tmap2/mobile/route.jsp?goalx=127.1057820&goaly=37.5157130&goalname=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        packageName: "com.skt.tmap.ku",
+        notice: "모바일에서는 티맵 앱으로 길찾기를 시작해요.",
+      },
+      {
+        label: "카카오맵",
+        caption: "앱에서 보기",
+        iconText: "K",
+        brand: "kakao",
+        type: "app",
+        action: "open-kakao-map-app",
+        appUrl:
+          "kakaomap://search?q=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80&p=37.5157130,127.1057820",
+        mobileFallbackUrl:
+          "http://m.map.kakao.com/scheme/search?q=%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80&p=37.5157130,127.1057820",
+        desktopUrl:
+          "https://map.kakao.com/link/search/%EC%9E%A0%EC%8B%A4%20%EB%8D%94%20%EC%BB%A8%EB%B2%A4%EC%85%98%203%EC%B8%B5%20%EB%B9%84%EC%8A%A4%ED%83%80%ED%99%80",
+        notice: "모바일에서는 카카오맵 앱으로 바로 이어져요.",
+      },
+    ],
+  },
+  locationGuide: {
+    navigationTitle: "내비게이션",
+    copyLabel: "주소 복사",
+    copyCaption: "예식장 주소 저장",
+    sections: [
+      {
+        title: "지하철",
+        items: [
+          { marker: "line2", text: "2호선 잠실역 8번 출구 약 300m" },
+          { marker: "line8", text: "8호선 잠실역 9번 출구 약 30m" },
+        ],
+      },
+      {
+        title: "버스",
+        items: [
+          { marker: "neutral", text: "일반버스 : 16, 32, 100, 101" },
+          { marker: "bus-blue", text: "간선버스 : 310, 341, 360" },
+          { marker: "bus-green", text: "지선버스 : 2311, 3411" },
+          { marker: "bus-gold", text: "광역·직행버스 : 1000, 1100, 1700" },
+          { marker: "bus-gray", text: "공항버스 : 6000, 6006" },
+          { marker: "bullet", text: "그 외 다양한 노선 이용 가능" },
+        ],
+      },
+      {
+        title: "자가용",
+        items: [{ marker: "none", text: "서울 송파구 올림픽로 319" }],
+      },
+      {
+        title: "주차",
+        items: [{ marker: "none", text: "교통회관 지상, 지하 주차장 이용" }],
       },
     ],
   },

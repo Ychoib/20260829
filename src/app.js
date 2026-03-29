@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260328-hero-script-map";
+import { invitationData } from "./invitation-data.js?v=20260329-location-guide";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -173,28 +173,60 @@ function renderMapLinks(items) {
           item.type === "app"
             ? `
               <button
-                class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
+                class="navigation-app navigation-app--${escapeHtml(item.brand || "default")}"
                 type="button"
                 data-map-action="${escapeHtml(item.action)}"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                <span class="pill-button__title">${escapeHtml(item.label)}</span>
-                <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
+                <span class="navigation-app__icon" aria-hidden="true">${escapeHtml(item.iconText || item.label.slice(0, 1))}</span>
+                <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </button>
             `
             : `
               <a
-                class="pill-button pill-button--map${item.emphasis ? " pill-button--dark" : ""}"
+                class="navigation-app navigation-app--${escapeHtml(item.brand || "default")}"
                 href="${escapeHtml(item.url)}"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                <span class="pill-button__title">${escapeHtml(item.label)}</span>
-                <span class="pill-button__meta">${escapeHtml(item.caption)}</span>
+                <span class="navigation-app__icon" aria-hidden="true">${escapeHtml(item.iconText || item.label.slice(0, 1))}</span>
+                <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </a>
             `
         }
+      `,
+    )
+    .join("");
+}
+
+function renderLocationGuideItem(item) {
+  const marker = item.marker || "none";
+  const markerMarkup =
+    marker === "none"
+      ? ""
+      : marker === "bullet"
+        ? '<span class="guide-item__marker guide-item__marker--bullet" aria-hidden="true">·</span>'
+        : `<span class="guide-item__marker guide-item__marker--${escapeHtml(marker)}" aria-hidden="true"></span>`;
+
+  return `
+    <li class="guide-item${marker === "none" ? " guide-item--plain" : ""}">
+      ${markerMarkup}
+      <span class="guide-item__text">${escapeHtml(item.text)}</span>
+    </li>
+  `;
+}
+
+function renderLocationGuideSections(sections) {
+  return sections
+    .map(
+      (section) => `
+        <section class="guide-block">
+          <h3 class="guide-block__title">${escapeHtml(section.title)}</h3>
+          <ul class="guide-list">
+            ${section.items.map((item) => renderLocationGuideItem(item)).join("")}
+          </ul>
+        </section>
       `,
     )
     .join("");
@@ -290,10 +322,7 @@ function createPageMarkup(data) {
         <div class="location-card__heading">
           <p class="section-tag">LOCATION</p>
           <h2 class="section-title">${escapeHtml(data.event.venue)}</h2>
-          <p class="location-card__address">
-            ${escapeHtml(data.event.address)}<br />
-            ${escapeHtml(data.event.addressLegacy)}
-          </p>
+          <p class="location-card__address">${escapeHtml(data.event.address)}</p>
         </div>
 
         <div class="location-map reveal" data-reveal>
@@ -306,25 +335,22 @@ function createPageMarkup(data) {
           <div class="location-map__fallback" data-map-fallback hidden></div>
         </div>
 
-        <div class="location-card__map-tools">
-          <p class="section-tag">MAP APPS</p>
-          <p class="location-card__map-note">${escapeHtml(data.maps.hint)}</p>
-        </div>
+        <div class="location-guide">
+          <section class="guide-block guide-block--navigation">
+            <h3 class="guide-block__title">${escapeHtml(data.locationGuide.navigationTitle)}</h3>
+            <p class="guide-block__description">${escapeHtml(data.maps.navigationDescription)}</p>
+            <div class="navigation-apps">
+              ${renderMapLinks(data.maps.apps)}
+            </div>
+            <button class="location-guide__copy" type="button" data-copy="${escapeHtml(data.event.address)}">
+              <span class="location-guide__copy-title">${escapeHtml(data.locationGuide.copyLabel)}</span>
+              <span class="location-guide__copy-caption">${escapeHtml(data.locationGuide.copyCaption)}</span>
+            </button>
+          </section>
 
-        <div class="location-card__actions">
-          ${renderMapLinks(data.maps.apps)}
-          <button class="pill-button pill-button--map" type="button" data-copy="${escapeHtml(data.event.address)}">
-            <span class="pill-button__title">주소 복사</span>
-            <span class="pill-button__meta">텍스트 복사</span>
-          </button>
-        </div>
-
-        <div class="info-grid">
-          ${renderInfoCards(data.informationCards)}
-        </div>
-
-        <div class="directions-grid">
-          ${renderDirections(data.directions)}
+          <div class="guide-blocks">
+            ${renderLocationGuideSections(data.locationGuide.sections)}
+          </div>
         </div>
       </div>
     </section>
@@ -409,7 +435,41 @@ function openExternalLink(url) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-function openAppWithFallback({ appUrl, mobileFallbackUrl, desktopUrl, notice }) {
+function isAndroidDevice() {
+  return /android/i.test(window.navigator.userAgent);
+}
+
+function buildAndroidIntentUrl(appUrl, packageName, fallbackUrl) {
+  if (!appUrl || !packageName) {
+    return "";
+  }
+
+  const matches = appUrl.match(/^([a-z0-9.+-]+):\/\/(.*)$/i);
+  if (!matches) {
+    return "";
+  }
+
+  const [, scheme, path] = matches;
+  const segments = [`intent://${path}#Intent`, `scheme=${scheme}`, `package=${packageName}`];
+
+  if (fallbackUrl) {
+    segments.push(`S.browser_fallback_url=${encodeURIComponent(fallbackUrl)}`);
+  }
+
+  segments.push("end");
+  return segments.join(";");
+}
+
+function triggerUrlNavigation(url) {
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.style.display = "none";
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+}
+
+function openAppWithFallback({ appUrl, mobileFallbackUrl, desktopUrl, notice, packageName }) {
   if (!appUrl) {
     if (desktopUrl) {
       openExternalLink(desktopUrl);
@@ -423,6 +483,16 @@ function openAppWithFallback({ appUrl, mobileFallbackUrl, desktopUrl, notice }) 
       showToast(notice);
     }
     return;
+  }
+
+  const fallbackUrl = mobileFallbackUrl || desktopUrl;
+
+  if (isAndroidDevice()) {
+    const intentUrl = buildAndroidIntentUrl(appUrl, packageName, fallbackUrl);
+    if (intentUrl) {
+      window.location.href = intentUrl;
+      return;
+    }
   }
 
   let fallbackTimerId;
@@ -443,12 +513,12 @@ function openAppWithFallback({ appUrl, mobileFallbackUrl, desktopUrl, notice }) 
 
   fallbackTimerId = window.setTimeout(() => {
     cleanup();
-    if (mobileFallbackUrl) {
-      window.location.href = mobileFallbackUrl;
+    if (fallbackUrl) {
+      window.location.href = fallbackUrl;
     }
   }, 1400);
 
-  window.location.href = appUrl;
+  triggerUrlNavigation(appUrl);
 }
 
 function setMapFallback(message, linkLabel, linkUrl) {
@@ -800,30 +870,15 @@ function setupEventHandlers(data) {
     const mapTrigger = event.target.closest("[data-map-action]");
     if (mapTrigger) {
       const action = mapTrigger.getAttribute("data-map-action");
-
-      if (action === "open-kakao-map-app") {
-        const kakaoMap = data.maps.apps.find((item) => item.action === action);
-        if (kakaoMap) {
-          openAppWithFallback({
-            appUrl: kakaoMap.appUrl,
-            mobileFallbackUrl: kakaoMap.mobileFallbackUrl,
-            desktopUrl: kakaoMap.desktopUrl,
-            notice: "모바일에서는 카카오맵 앱으로 바로 이어져요.",
-          });
-        }
-        return;
-      }
-
-      if (action === "open-tmap-app") {
-        const tmap = data.maps.apps.find((item) => item.action === action);
-        if (tmap) {
-          openAppWithFallback({
-            appUrl: tmap.appUrl,
-            mobileFallbackUrl: tmap.mobileFallbackUrl,
-            desktopUrl: tmap.desktopUrl,
-            notice: "모바일에서는 티맵 앱으로 길찾기를 시작해요.",
-          });
-        }
+      const mapApp = data.maps.apps.find((item) => item.action === action);
+      if (mapApp) {
+        openAppWithFallback({
+          appUrl: mapApp.appUrl,
+          mobileFallbackUrl: mapApp.mobileFallbackUrl,
+          desktopUrl: mapApp.desktopUrl,
+          notice: mapApp.notice,
+          packageName: mapApp.packageName,
+        });
         return;
       }
     }
