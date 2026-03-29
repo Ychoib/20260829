@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260329-calendar-tone";
+import { invitationData } from "./invitation-data.js?v=20260329-variant-base";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -13,7 +13,7 @@ let naverMapLoader;
 let musicAutoplayCleanup;
 
 function escapeHtml(text) {
-  return text
+  return String(text ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -30,7 +30,7 @@ function showToast(message) {
   }, 1800);
 }
 
-async function copyText(text, message = "복사했어요.") {
+async function copyText(text, message = "복사되었어요.") {
   try {
     await navigator.clipboard.writeText(text);
     showToast(message);
@@ -46,10 +46,6 @@ async function copyText(text, message = "복사했어요.") {
     textarea.remove();
     showToast(message);
   }
-}
-
-function formatWithLineBreaks(lines) {
-  return lines.map((line) => escapeHtml(line)).join("<br />");
 }
 
 function buildCalendar(dateString) {
@@ -77,11 +73,14 @@ function buildCalendar(dateString) {
 }
 
 function renderCalendar(dateString) {
-  const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
+  const targetDate = new Date(dateString);
+  const monthLabel = targetDate.toLocaleString("en-US", { month: "long" }).toUpperCase();
+  const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const cells = buildCalendar(dateString);
 
   return `
     <div class="calendar">
+      <p class="calendar__month">${monthLabel}</p>
       <div class="calendar__weekdays">
         ${weekdays.map((day) => `<span>${day}</span>`).join("")}
       </div>
@@ -98,35 +97,6 @@ function renderCalendar(dateString) {
       </div>
     </div>
   `;
-}
-
-function renderInfoCards(cards) {
-  return cards
-    .map(
-      (card) => `
-        <article class="info-card reveal" data-reveal>
-          <span class="info-card__label">${escapeHtml(card.title)}</span>
-          <h3 class="info-card__heading">${escapeHtml(card.heading)}</h3>
-          <p class="info-card__body">${formatWithLineBreaks(card.lines)}</p>
-        </article>
-      `,
-    )
-    .join("");
-}
-
-function renderDirections(items) {
-  return items
-    .map(
-      (item) => `
-        <article class="direction-card reveal" data-reveal>
-          <h3>${escapeHtml(item.title)}</h3>
-          <ul>
-            ${item.lines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}
-          </ul>
-        </article>
-      `,
-    )
-    .join("");
 }
 
 function renderGallery(items) {
@@ -153,12 +123,13 @@ function renderContacts(items) {
     .map(
       (item) => `
         <article class="contact-card reveal" data-reveal>
-          <span class="contact-card__role">${escapeHtml(item.role)}</span>
+          <span class="contact-card__role">${escapeHtml(item.role === "GROOM" ? "신랑에게 연락하기" : "신부에게 연락하기")}</span>
           <h3 class="contact-card__name">${escapeHtml(item.name)}</h3>
           <p class="contact-card__phone">${escapeHtml(item.phone)}</p>
-          <a class="contact-card__button" href="tel:${item.phone.replaceAll("-", "")}">
-            ${escapeHtml(item.buttonLabel)}
-          </a>
+          <div class="contact-card__actions">
+            <a class="contact-card__button" href="tel:${item.phone.replaceAll("-", "")}">전화</a>
+            <a class="contact-card__button" href="sms:${item.phone.replaceAll("-", "")}">문자</a>
+          </div>
         </article>
       `,
     )
@@ -177,14 +148,14 @@ function renderAccountGroups(groups) {
                 (entry) => `
                   <article class="account-box">
                     <span class="account-box__label">${escapeHtml(entry.label)}</span>
-                    <strong>${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
-                    <span>예금주 ${escapeHtml(entry.holder)}</span>
+                    <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
+                    <span class="account-box__holder">예금주 ${escapeHtml(entry.holder)}</span>
                     <button
-                      class="pill-button pill-button--dark account-box__button"
+                      class="account-box__button"
                       type="button"
                       data-copy="${escapeHtml(`${entry.bank} ${entry.number} (${entry.holder})`)}"
                     >
-                      계좌번호 복사
+                      복사
                     </button>
                   </article>
                 `,
@@ -238,7 +209,7 @@ function renderLocationGuideItem(item) {
     marker === "none"
       ? ""
       : marker === "bullet"
-        ? '<span class="guide-item__marker guide-item__marker--bullet" aria-hidden="true">·</span>'
+        ? '<span class="guide-item__marker guide-item__marker--bullet" aria-hidden="true">•</span>'
         : `<span class="guide-item__marker guide-item__marker--${escapeHtml(marker)}" aria-hidden="true"></span>`;
 
   return `
@@ -267,49 +238,35 @@ function renderLocationGuideSections(sections) {
 function createPageMarkup(data) {
   return `
     <button class="music-fab" type="button" data-action="music-toggle" aria-pressed="false" aria-label="배경음악 재생">
-      <span class="music-fab__icon">♪</span>
+      <span class="music-fab__icon">M</span>
       <span class="music-fab__label">BGM</span>
     </button>
 
     <section class="hero">
-      <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" />
-      <div class="hero__shade" aria-hidden="true"></div>
-      <div class="hero__content">
-        ${data.hero.label ? `<p class="hero__label">${escapeHtml(data.hero.label)}</p>` : ""}
-        ${data.couple.scriptTitle ? `<p class="hero__script">${escapeHtml(data.couple.scriptTitle)}</p>` : ""}
-        <h1 class="hero__names">${escapeHtml(data.couple.title)}</h1>
-        <p class="hero__line">${escapeHtml(data.couple.invitationLine)}</p>
-        <div class="hero__datebar">
-          <span>${escapeHtml(data.event.dayLabel)}</span>
-          <span>${escapeHtml(data.event.monthLabel)}</span>
-          <span>${escapeHtml(data.event.yearLabel)}</span>
+      <div class="hero__top">
+        <p class="hero__script">${escapeHtml(data.couple.scriptTitle || "Getting Married")}</p>
+        <div class="hero__names">
+          <span class="hero__name">${escapeHtml(data.couple.groom)}</span>
+          <span class="hero__and">and</span>
+          <span class="hero__name">${escapeHtml(data.couple.bride)}</span>
         </div>
       </div>
-    </section>
-
-    <section class="section section--story">
-      <div class="story-card reveal is-visible" data-reveal>
-        <div class="story-card__content">
-          <p class="section-tag">${escapeHtml(data.spotlight.label)}</p>
-          <h2 class="section-title">${escapeHtml(data.couple.storyTitle)}</h2>
-          <p class="story-card__text">${escapeHtml(data.couple.storyText)}</p>
-        </div>
-        <figure class="story-card__figure">
-          <img src="${data.spotlight.image}" alt="${escapeHtml(data.spotlight.alt)}" loading="lazy" />
-        </figure>
+      <figure class="hero__figure">
+        <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" />
+      </figure>
+      <div class="hero__meta">
+        <p class="hero__date">${escapeHtml(data.event.displayDate)}</p>
+        <p class="hero__venue">${escapeHtml(data.event.venue)}</p>
       </div>
     </section>
 
     <section class="section">
-      <div class="paper-card reveal" data-reveal>
-        <p class="section-tag">${escapeHtml(data.invitation.label)}</p>
-        <h2 class="section-title">${escapeHtml(data.invitation.title)}</h2>
+      <div class="invitation-panel reveal is-visible" data-reveal>
+        <p class="section-tag">Invitation</p>
         <div class="invitation-copy">
           ${data.invitation.poem
             .map((line) =>
-              line
-                ? `<p>${escapeHtml(line)}</p>`
-                : '<div class="invitation-copy__spacer" aria-hidden="true"></div>',
+              line ? `<p>${escapeHtml(line)}</p>` : '<div class="invitation-copy__spacer" aria-hidden="true"></div>',
             )
             .join("")}
         </div>
@@ -319,31 +276,23 @@ function createPageMarkup(data) {
     <section class="section">
       <div class="schedule-card reveal" data-reveal>
         <div class="schedule-card__intro">
-          <p class="section-tag">WEDDING DAY</p>
+          <h2 class="section-title section-title--en">Wedding Day</h2>
           <p class="schedule-card__date">${escapeHtml(data.event.shortDate)}</p>
           <p class="schedule-card__text">${escapeHtml(data.event.dayOfWeekLabel)}</p>
         </div>
         ${renderCalendar(data.event.isoDate)}
-        <div class="countdown" aria-label="결혼식까지 남은 시간">
-          <div class="countdown__item">
-            <span class="countdown__label">DAYS</span>
-            <strong id="countdown-days">000</strong>
-          </div>
-          <div class="countdown__separator">:</div>
-          <div class="countdown__item">
-            <span class="countdown__label">HOUR</span>
-            <strong id="countdown-hours">00</strong>
-          </div>
-          <div class="countdown__separator">:</div>
-          <div class="countdown__item">
-            <span class="countdown__label">MIN</span>
-            <strong id="countdown-minutes">00</strong>
-          </div>
-          <div class="countdown__separator">:</div>
-          <div class="countdown__item">
-            <span class="countdown__label">SEC</span>
-            <strong id="countdown-seconds">00</strong>
-          </div>
+        <button class="calendar-button" type="button" data-action="calendar">캘린더 일정 추가하기</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="gallery-panel reveal" data-reveal>
+        <div class="gallery-panel__heading">
+          <h2 class="section-title section-title--en">Gallery</h2>
+          <p class="gallery-panel__sub">Moment of Love</p>
+        </div>
+        <div class="gallery-grid">
+          ${renderGallery(data.gallery)}
         </div>
       </div>
     </section>
@@ -351,31 +300,25 @@ function createPageMarkup(data) {
     <section class="section">
       <div class="location-card reveal" data-reveal>
         <div class="location-card__heading">
-          <p class="section-tag">LOCATION</p>
-          <h2 class="section-title">${escapeHtml(data.event.venue)}</h2>
+          <h2 class="section-title section-title--en">Location</h2>
+          <p class="location-card__title">${escapeHtml(data.event.venue)}</p>
           <p class="location-card__address">${escapeHtml(data.event.address)}</p>
         </div>
 
         <div class="location-map reveal" data-reveal>
-          <div
-            id="naver-map"
-            class="location-map__canvas"
-            role="img"
-            aria-label="${escapeHtml(`${data.event.venue} 네이버 지도`)}"
-          ></div>
+          <div id="naver-map" class="location-map__canvas" role="img" aria-label="${escapeHtml(`${data.event.venue} 네이버 지도`)}"></div>
           <div class="location-map__fallback" data-map-fallback hidden></div>
         </div>
 
         <div class="location-guide">
           <section class="guide-block guide-block--navigation">
-            <h3 class="guide-block__title">${escapeHtml(data.locationGuide.navigationTitle)}</h3>
-            <p class="guide-block__description">${escapeHtml(data.maps.navigationDescription)}</p>
+            <h3 class="guide-block__title">내비게이션</h3>
             <div class="navigation-apps">
               ${renderMapLinks(data.maps.apps)}
             </div>
             <button class="location-guide__copy" type="button" data-copy="${escapeHtml(data.event.address)}">
-              <span class="location-guide__copy-title">${escapeHtml(data.locationGuide.copyLabel)}</span>
-              <span class="location-guide__copy-caption">${escapeHtml(data.locationGuide.copyCaption)}</span>
+              <span class="location-guide__copy-title">주소 복사하기</span>
+              <span class="location-guide__copy-caption">${escapeHtml(data.event.address)}</span>
             </button>
           </section>
 
@@ -387,56 +330,38 @@ function createPageMarkup(data) {
     </section>
 
     <section class="section">
-      <div class="gallery-panel reveal" data-reveal>
-        <p class="section-tag">GALLERY</p>
-        <h2 class="section-title">우리의 순간을 담았어요</h2>
-        <div class="gallery-grid">
-          ${renderGallery(data.gallery)}
+      <div class="utility-card reveal" data-reveal>
+        <div class="utility-card__heading">
+          <h2 class="section-title section-title--en">Contact</h2>
+          <p class="utility-card__sub">축하의 마음 전하기</p>
+        </div>
+        <div class="contact-grid">
+          ${renderContacts(data.contacts)}
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="utility-grid">
-        <div class="utility-card reveal" data-reveal>
-          <p class="section-tag">CONTACT</p>
-          <h2 class="section-title">편하게 연락 주세요</h2>
-          <div class="contact-grid">
-            ${renderContacts(data.contacts)}
-          </div>
+      <div class="utility-card reveal" data-reveal>
+        <div class="utility-card__heading">
+          <h2 class="section-title section-title--en">Gift</h2>
+          <p class="utility-card__sub">마음 전하실 곳</p>
         </div>
-
-        <div class="utility-card reveal" data-reveal>
-          <p class="section-tag">ACCOUNT</p>
-          <h2 class="section-title">마음 전하실 곳</h2>
-          <p class="utility-card__copy">${escapeHtml(data.account.message)}</p>
-          <div class="account-groups">
-            ${renderAccountGroups(data.account.groups)}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--closing">
-      <div class="closing-card reveal" data-reveal>
-        <div class="closing-card__quote">
-          ${data.quote.lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
-        </div>
-        <div class="closing-card__share">
-          <p class="section-tag">SHARE</p>
-          <h2 class="section-title">${escapeHtml(data.sharing.title)}</h2>
-          <p class="utility-card__copy">${escapeHtml(data.sharing.description)}</p>
-          <div class="utility-card__actions">
-            <button class="pill-button pill-button--dark" type="button" data-action="share">링크 공유</button>
-            <button class="pill-button" type="button" data-action="copy-link">링크 복사</button>
-            <button class="pill-button" type="button" data-action="calendar">캘린더 추가</button>
-          </div>
+        <p class="utility-card__copy">${escapeHtml(data.account.message)}</p>
+        <div class="account-groups">
+          ${renderAccountGroups(data.account.groups)}
         </div>
       </div>
     </section>
 
     <footer class="footer">
-      <p>${escapeHtml(data.couple.title)}의 결혼식에 함께해 주셔서 감사합니다.</p>
+      <div class="footer__actions">
+        <button class="pill-button" type="button" data-action="share">링크 공유</button>
+        <button class="pill-button" type="button" data-action="copy-link">링크 복사</button>
+        <button class="pill-button" type="button" data-action="calendar">캘린더 추가</button>
+      </div>
+      <p class="footer__title">${escapeHtml(data.couple.groom)} &amp; ${escapeHtml(data.couple.bride)}</p>
+      <p class="footer__date">${escapeHtml(data.event.shortDate)}</p>
       <p class="footer__meta">
         Music:
         <a href="${data.music.sourceUrl}" target="_blank" rel="noreferrer">${escapeHtml(data.music.title)}</a>
@@ -452,12 +377,12 @@ function isMobileDevice() {
   return /android|iphone|ipad|ipod/i.test(window.navigator.userAgent);
 }
 
-function openExternalLink(url) {
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
 function isAndroidDevice() {
   return /android/i.test(window.navigator.userAgent);
+}
+
+function openExternalLink(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function buildAndroidIntentUrl(appUrl, packageName, fallbackUrl) {
@@ -567,20 +492,12 @@ function setMapFallback(message, linkLabel, linkUrl) {
 function getNaverMapAuth() {
   const keyId = (runtimeConfig.naverMapKeyId || runtimeConfig.ncpKeyId || "").trim();
   if (keyId) {
-    return {
-      credential: keyId,
-      paramName: "ncpKeyId",
-      label: "Key ID",
-    };
+    return { credential: keyId, paramName: "ncpKeyId" };
   }
 
   const clientId = (runtimeConfig.naverMapClientId || runtimeConfig.ncpClientId || "").trim();
   if (clientId) {
-    return {
-      credential: clientId,
-      paramName: "ncpClientId",
-      label: "Client ID",
-    };
+    return { credential: clientId, paramName: "ncpClientId" };
   }
 
   return null;
@@ -619,11 +536,7 @@ async function setupNaverMap(data) {
 
   const auth = getNaverMapAuth();
   if (!auth) {
-    setMapFallback(
-      "네이버 지도 API 연결 준비는 끝났어요. Key ID 또는 Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
-      "네이버지도에서 보기",
-      data.maps.naver,
-    );
+    setMapFallback("네이버 지도 연결 정보가 아직 없어요. 지도 앱 버튼으로 위치를 바로 확인해 주세요.", "네이버 지도 열기", data.maps.naver);
     return;
   }
 
@@ -648,36 +561,32 @@ async function setupNaverMap(data) {
       title: data.event.venue,
     });
   } catch {
-    setMapFallback(
-      "지도를 불러오지 못했어요. 네이버지도에서 바로 위치를 확인하실 수 있어요.",
-      "네이버지도에서 보기",
-      data.maps.naver,
-    );
+    setMapFallback("지도를 불러오지 못했어요. 네이버 지도에서 위치를 바로 확인해 주세요.", "네이버 지도 열기", data.maps.naver);
   }
 }
 
 function updateCountdown(dateString) {
+  const daysElement = document.querySelector("#countdown-days");
+  const hoursElement = document.querySelector("#countdown-hours");
+  const minutesElement = document.querySelector("#countdown-minutes");
+  const secondsElement = document.querySelector("#countdown-seconds");
+
+  if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
+    return;
+  }
+
   const target = new Date(dateString).getTime();
   const now = Date.now();
   const difference = Math.max(target - now, 0);
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const calendarDays = Math.max(Math.ceil(difference / (1000 * 60 * 60 * 24)), 0);
   const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((difference / (1000 * 60)) % 60);
   const seconds = Math.floor((difference / 1000) % 60);
 
-  document.querySelector("#countdown-days").textContent = String(days).padStart(3, "0");
-  document.querySelector("#countdown-hours").textContent = String(hours).padStart(2, "0");
-  document.querySelector("#countdown-minutes").textContent = String(minutes).padStart(2, "0");
-  document.querySelector("#countdown-seconds").textContent = String(seconds).padStart(2, "0");
-
-  const message = document.querySelector("#countdown-message");
-  if (message) {
-    message.textContent =
-      difference === 0
-        ? `${invitationData.couple.title}의 결혼식이 바로 오늘입니다.`
-        : `${invitationData.couple.title}의 결혼식이 ${calendarDays}일 남았습니다.`;
-  }
+  daysElement.textContent = String(days).padStart(3, "0");
+  hoursElement.textContent = String(hours).padStart(2, "0");
+  minutesElement.textContent = String(minutes).padStart(2, "0");
+  secondsElement.textContent = String(seconds).padStart(2, "0");
 }
 
 function startCountdown(dateString) {
@@ -746,6 +655,7 @@ function updateMusicButton(isPlaying) {
   button.classList.toggle("is-playing", isPlaying);
   button.setAttribute("aria-pressed", String(isPlaying));
   button.setAttribute("aria-label", isPlaying ? "배경음악 정지" : "배경음악 재생");
+
   const label = button.querySelector(".music-fab__label");
   if (label) {
     label.textContent = isPlaying ? "ON" : "BGM";
@@ -784,6 +694,7 @@ function registerMusicAutoplayFallback() {
   const onPointerDown = (event) => {
     void attemptPlayback(event);
   };
+
   const onKeyDown = () => {
     void attemptPlayback();
   };
@@ -833,7 +744,7 @@ async function toggleMusic() {
     try {
       await musicPlayer.play();
       updateMusicButton(true);
-      showToast("배경음악을 재생해요.");
+      showToast("배경음악을 재생했어요.");
     } catch {
       showToast("음악 재생을 시작하지 못했어요.");
     }
@@ -874,7 +785,7 @@ function setupEventHandlers(data) {
     if (copyTrigger) {
       const value = copyTrigger.getAttribute("data-copy");
       if (value) {
-        await copyText(value, "복사했어요.");
+        await copyText(value);
       }
       return;
     }
@@ -900,8 +811,8 @@ function setupEventHandlers(data) {
           notice: mapApp.notice,
           packageName: mapApp.packageName,
         });
-        return;
       }
+      return;
     }
 
     const actionTrigger = event.target.closest("[data-action]");
@@ -925,7 +836,7 @@ function setupEventHandlers(data) {
       if (navigator.share) {
         try {
           await navigator.share({
-            title: `${data.couple.groom} · ${data.couple.bride} 결혼합니다`,
+            title: `${data.couple.groom} · ${data.couple.bride} 결혼식`,
             text: `${data.event.displayDate} ${data.event.venue}`,
             url: window.location.href,
           });
