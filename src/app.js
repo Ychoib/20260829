@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260329-kakao-place";
+import { invitationData } from "./invitation-data.js?v=20260329-account-groups";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -160,6 +160,38 @@ function renderContacts(items) {
             ${escapeHtml(item.buttonLabel)}
           </a>
         </article>
+      `,
+    )
+    .join("");
+}
+
+function renderAccountGroups(groups) {
+  return groups
+    .map(
+      (group) => `
+        <section class="account-group">
+          <h3 class="account-group__title">${escapeHtml(group.side)}</h3>
+          <div class="account-group__entries">
+            ${group.entries
+              .map(
+                (entry) => `
+                  <article class="account-box">
+                    <span class="account-box__label">${escapeHtml(entry.label)}</span>
+                    <strong>${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
+                    <span>예금주 ${escapeHtml(entry.holder)}</span>
+                    <button
+                      class="pill-button pill-button--dark account-box__button"
+                      type="button"
+                      data-copy="${escapeHtml(`${entry.bank} ${entry.number} (${entry.holder})`)}"
+                    >
+                      계좌번호 복사
+                    </button>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+        </section>
       `,
     )
     .join("");
@@ -379,18 +411,8 @@ function createPageMarkup(data) {
           <p class="section-tag">ACCOUNT</p>
           <h2 class="section-title">마음 전하실 곳</h2>
           <p class="utility-card__copy">${escapeHtml(data.account.message)}</p>
-          <div class="account-box">
-            <strong>${escapeHtml(`${data.account.bank} ${data.account.number}`)}</strong>
-            <span>예금주 ${escapeHtml(data.account.holder)}</span>
-          </div>
-          <div class="utility-card__actions">
-            <button
-              class="pill-button pill-button--dark"
-              type="button"
-              data-copy="${escapeHtml(`${data.account.bank} ${data.account.number} (${data.account.holder})`)}"
-            >
-              계좌번호 복사
-            </button>
+          <div class="account-groups">
+            ${renderAccountGroups(data.account.groups)}
           </div>
         </div>
       </div>

@@ -192,10 +192,37 @@ export const invitationData = {
     },
   ],
   account: {
-    bank: "우리은행",
-    number: "1002-753-424111",
-    holder: "최영찬",
     message: "멀리서도 전해주시는 따뜻한 마음에 감사드립니다.",
+    groups: [
+      {
+        side: "신랑측",
+        entries: [
+          {
+            label: "신랑",
+            holder: "최영찬",
+            bank: "우리은행",
+            number: "1002-753-424111",
+          },
+          {
+            label: "신랑 부모님",
+            holder: "최형신",
+            bank: "신한은행",
+            number: "110013381555",
+          },
+        ],
+      },
+      {
+        side: "신부측",
+        entries: [
+          {
+            label: "신부 부모님",
+            holder: "고현석",
+            bank: "국민은행",
+            number: "821210640293",
+          },
+        ],
+      },
+    ],
   },
   gallery: [
     {
