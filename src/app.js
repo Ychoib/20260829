@@ -473,7 +473,29 @@ function setMapFallback(message, linkLabel, linkUrl) {
   `;
 }
 
-function loadNaverMapScript(clientId) {
+function getNaverMapAuth() {
+  const keyId = (runtimeConfig.naverMapKeyId || runtimeConfig.ncpKeyId || "").trim();
+  if (keyId) {
+    return {
+      credential: keyId,
+      paramName: "ncpKeyId",
+      label: "Key ID",
+    };
+  }
+
+  const clientId = (runtimeConfig.naverMapClientId || runtimeConfig.ncpClientId || "").trim();
+  if (clientId) {
+    return {
+      credential: clientId,
+      paramName: "ncpClientId",
+      label: "Client ID",
+    };
+  }
+
+  return null;
+}
+
+function loadNaverMapScript(auth) {
   if (window.naver?.maps) {
     return Promise.resolve(window.naver);
   }
@@ -488,7 +510,9 @@ function loadNaverMapScript(clientId) {
     const script = document.createElement("script");
     script.id = "naver-map-sdk";
     script.async = true;
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${encodeURIComponent(clientId)}&callback=__initWeddingNaverMap`;
+    script.src =
+      `https://oapi.map.naver.com/openapi/v3/maps.js?${auth.paramName}=${encodeURIComponent(auth.credential)}` +
+      "&callback=__initWeddingNaverMap";
     script.onerror = () => reject(new Error("Failed to load NAVER Maps API"));
     document.head.append(script);
   });
@@ -502,10 +526,10 @@ async function setupNaverMap(data) {
     return;
   }
 
-  const clientId = (runtimeConfig.naverMapClientId || runtimeConfig.naverMapKeyId || "").trim();
-  if (!clientId) {
+  const auth = getNaverMapAuth();
+  if (!auth) {
     setMapFallback(
-      "네이버 지도 API 연결 준비는 끝났어요. Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
+      "네이버 지도 API 연결 준비는 끝났어요. Key ID 또는 Client ID를 넣으면 이 자리에서 바로 지도를 볼 수 있어요.",
       "네이버지도에서 보기",
       data.maps.naver,
     );
@@ -513,7 +537,7 @@ async function setupNaverMap(data) {
   }
 
   try {
-    await loadNaverMapScript(clientId);
+    await loadNaverMapScript(auth);
     const center = new window.naver.maps.LatLng(data.maps.coordinates.lat, data.maps.coordinates.lng);
     const map = new window.naver.maps.Map("naver-map", {
       center,
