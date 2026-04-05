@@ -59,6 +59,6 @@ push 후 GitHub 저장소에서 아래를 확인하면 됩니다.
 ## 네이버 지도 API 연결
 
 - 네이버 지도 임베드는 `config.js`의 `naverMapKeyId` 값을 사용합니다.
-- GitHub Pages 주소를 그대로 쓸 경우, 네이버 클라우드 플랫폼 Maps 애플리케이션에 `https://ychoib.github.io` 도메인을 등록해야 정상 로드됩니다.
+- GitHub Pages 커스텀 도메인을 사용할 경우, 네이버 클라우드 플랫폼 Maps 애플리케이션에 실제 접속 도메인(`https://20260829.info`)을 등록해야 정상 로드됩니다.
 - 최신 Maps 문서 기준으로 스크립트 로드 파라미터는 `ncpKeyId`입니다.
 - `Key ID`가 비어 있으면 지도 영역은 안내 문구로 대체되고, 네이버지도 웹 링크만 표시됩니다.
