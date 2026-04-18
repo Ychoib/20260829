@@ -1,43 +1,3 @@
-const NAVER_MAP_ICON = `
-  <svg class="navigation-app__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <linearGradient id="naverMapPinGradient" x1="7.5" y1="4.5" x2="24.5" y2="28.5" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#1678FF" />
-        <stop offset="0.46" stop-color="#0F6BFF" />
-        <stop offset="1" stop-color="#03CF37" />
-      </linearGradient>
-    </defs>
-    <path d="M16 2.75C10.34 2.75 5.75 7.34 5.75 13C5.75 16.45 7.5 19.58 9.87 22.6C11.4 24.55 13.17 26.46 14.89 28.32C15.48 28.96 16.52 28.96 17.11 28.32C18.83 26.46 20.6 24.55 22.13 22.6C24.5 19.58 26.25 16.45 26.25 13C26.25 7.34 21.66 2.75 16 2.75Z" fill="url(#naverMapPinGradient)" />
-    <path d="M11.05 9.2H13.88L18.12 15.09V9.2H20.96V21.1H18.12L13.89 15.21V21.1H11.05V9.2Z" fill="white" />
-  </svg>
-`;
-
-const KAKAO_NAVI_ICON = `
-  <svg class="navigation-app__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect width="32" height="32" rx="6" fill="#FFDE00" />
-    <path d="M16 5.25L24.2 10V22L16 26.75L7.8 22V10L16 5.25Z" fill="#1D73D8" />
-    <path d="M13.2 11.65C13.2 10.77 13.92 10.05 14.8 10.05H20.1L17.64 8.08C17.04 7.61 16.94 6.73 17.42 6.13C17.89 5.53 18.76 5.43 19.37 5.9L24.89 10.28C25.24 10.56 25.44 10.98 25.44 11.43C25.44 11.88 25.24 12.3 24.89 12.57L19.37 16.96C18.76 17.43 17.89 17.33 17.42 16.73C16.94 16.13 17.04 15.25 17.64 14.78L20.1 12.81H16.1V19.7C16.1 20.58 15.38 21.3 14.5 21.3C13.62 21.3 12.9 20.58 12.9 19.7V11.65H13.2Z" fill="#FFDE00" />
-  </svg>
-`;
-
-const TMAP_ICON = `
-  <svg class="navigation-app__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <linearGradient id="tmapTopGradient" x1="6" y1="7.5" x2="26" y2="7.5" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#F63BB3" />
-        <stop offset="0.5" stop-color="#9D39F0" />
-        <stop offset="1" stop-color="#34D9B7" />
-      </linearGradient>
-      <linearGradient id="tmapVerticalGradient" x1="16.5" y1="10.5" x2="25" y2="26.5" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#35D4B6" />
-        <stop offset="1" stop-color="#1B5FEF" />
-      </linearGradient>
-    </defs>
-    <path d="M6 7.5H26V11.75H15.75C14.35 11.75 13.25 10.65 13.25 9.25V7.5H6Z" fill="url(#tmapTopGradient)" />
-    <path d="M15.5 26.5V18C15.5 12.54 19.93 8.1 25.4 8.1H29V12.35H25.4C22.28 12.35 19.75 14.88 19.75 18V26.5H15.5Z" fill="url(#tmapVerticalGradient)" />
-  </svg>
-`;
-
 export const invitationData = {
   couple: {
     groom: "최영찬",
@@ -142,7 +102,7 @@ export const invitationData = {
       {
         label: "네이버지도",
         caption: "앱에서 열기",
-        iconSvg: NAVER_MAP_ICON,
+        iconSrc: "./assets/icons/naver-map.svg",
         brand: "naver",
         type: "app",
         action: "open-naver-map-app",
@@ -157,7 +117,7 @@ export const invitationData = {
       {
         label: "티맵",
         caption: "앱 길찾기",
-        iconSvg: TMAP_ICON,
+        iconSrc: "./assets/icons/tmap.svg",
         brand: "tmap",
         type: "app",
         action: "open-tmap-app",
@@ -173,7 +133,7 @@ export const invitationData = {
       {
         label: "카카오맵",
         caption: "앱에서 보기",
-        iconSvg: KAKAO_NAVI_ICON,
+        iconSrc: "./assets/icons/kakao-navi.svg",
         brand: "kakao",
         type: "app",
         action: "open-kakao-map-app",

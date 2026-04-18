@@ -603,6 +603,7 @@ a {
   transition:
     color 180ms ease,
     border-color 180ms ease;
+  overflow: visible;
 }
 
 .navigation-app:hover,
@@ -615,13 +616,24 @@ a {
   display: none;
 }
 
-.navigation-app__icon-svg,
 .navigation-app__icon-image {
   display: block;
-  width: 17px;
-  height: 17px;
+  width: auto;
+  height: 18px;
+  max-width: 24px;
   object-fit: contain;
-  flex: 0 0 17px;
+  flex: 0 0 auto;
+}
+
+.navigation-app--naver .navigation-app__icon-image {
+  height: 21px;
+  max-width: 16px;
+}
+
+.navigation-app--kakao .navigation-app__icon-image,
+.navigation-app--tmap .navigation-app__icon-image {
+  height: 18px;
+  max-width: 18px;
 }
 
 .navigation-app__label {
