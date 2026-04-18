@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260418-original-map-images-v2";
+import { invitationData } from "./invitation-data.js?v=20260418-user-map-images";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");

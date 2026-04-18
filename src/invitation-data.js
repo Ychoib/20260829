@@ -102,7 +102,7 @@ export const invitationData = {
       {
         label: "네이버지도",
         caption: "앱에서 열기",
-        iconSrc: "./assets/icons/naver-map.svg?v=20260418-original-source",
+        iconSrc: "./assets/images/네이버지도.webp?v=20260418-user-source",
         brand: "naver",
         type: "app",
         action: "open-naver-map-app",
@@ -117,7 +117,7 @@ export const invitationData = {
       {
         label: "티맵",
         caption: "앱 길찾기",
-        iconSrc: "./assets/icons/tmap.svg?v=20260418-original-source",
+        iconSrc: "./assets/images/T맵.svg?v=20260418-user-source",
         brand: "tmap",
         type: "app",
         action: "open-tmap-app",
@@ -133,7 +133,7 @@ export const invitationData = {
       {
         label: "카카오맵",
         caption: "앱에서 보기",
-        iconSrc: "./assets/icons/kakao-navi.svg?v=20260418-original-source",
+        iconSrc: "./assets/images/카카오네비.png?v=20260418-user-source",
         brand: "kakao",
         type: "app",
         action: "open-kakao-map-app",
