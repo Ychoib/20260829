@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260329-variant-polish";
+import { invitationData } from "./invitation-data.js?v=20260418-inline-map-icons";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -173,7 +173,14 @@ function renderAccountGroups(groups) {
 function renderMapLinks(items) {
   return items
     .map(
-      (item) => `
+      (item) => {
+        const iconMarkup = item.iconSvg
+          ? item.iconSvg
+          : item.iconSrc
+            ? `<img class="navigation-app__icon-image" src="${escapeHtml(item.iconSrc)}" alt="" aria-hidden="true" />`
+            : "";
+
+        return `
         ${
           item.type === "app"
             ? `
@@ -183,11 +190,7 @@ function renderMapLinks(items) {
                 data-map-action="${escapeHtml(item.action)}"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                ${
-                  item.iconSrc
-                    ? `<img class="navigation-app__icon-image" src="${escapeHtml(item.iconSrc)}" alt="" aria-hidden="true" />`
-                    : ""
-                }
+                ${iconMarkup}
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </button>
             `
@@ -199,16 +202,13 @@ function renderMapLinks(items) {
                 rel="noreferrer"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                ${
-                  item.iconSrc
-                    ? `<img class="navigation-app__icon-image" src="${escapeHtml(item.iconSrc)}" alt="" aria-hidden="true" />`
-                    : ""
-                }
+                ${iconMarkup}
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </a>
             `
         }
-      `,
+      `;
+      },
     )
     .join("");
 }

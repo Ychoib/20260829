@@ -589,7 +589,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
   min-height: auto;
   padding: 0 0 6px;
   border: 0;
@@ -615,14 +615,17 @@ a {
   display: none;
 }
 
+.navigation-app__icon-svg,
 .navigation-app__icon-image {
-  width: 18px;
-  height: 18px;
+  display: block;
+  width: 17px;
+  height: 17px;
   object-fit: contain;
-  flex: 0 0 auto;
+  flex: 0 0 17px;
 }
 
 .navigation-app__label {
+  display: inline-block;
   font-size: 0.84rem;
   line-height: 1.4;
   word-break: keep-all;
