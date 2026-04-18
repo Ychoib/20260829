@@ -147,11 +147,11 @@ function renderAccountGroups(groups) {
               .map(
                 (entry) => `
                   <article class="account-box">
-                    <div class="account-box__main">
+                    <div class="account-box__meta">
                       <span class="account-box__label">${escapeHtml(entry.label)}</span>
-                      <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
                       <span class="account-box__holder">예금주 ${escapeHtml(entry.holder)}</span>
                     </div>
+                    <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
                     <button
                       class="account-box__button"
                       type="button"
