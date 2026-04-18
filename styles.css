@@ -566,19 +566,21 @@ a {
 }
 
 .navigation-apps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   margin-top: 14px;
 }
 
 .navigation-app {
   appearance: none;
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  min-height: 54px;
-  padding: 8px 2px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  min-height: auto;
+  padding: 0 0 4px;
   border: 0;
   border-bottom: 1px solid rgba(94, 74, 53, 0.16);
   border-radius: 0;
@@ -588,46 +590,24 @@ a {
   text-decoration: none;
   cursor: pointer;
   transition:
-    transform 180ms ease,
+    color 180ms ease,
     border-color 180ms ease;
 }
 
 .navigation-app:hover,
 .navigation-app:focus-visible {
-  transform: translateY(-1px);
   border-color: rgba(94, 74, 53, 0.18);
+  color: #5e4a35;
 }
 
 .navigation-app__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  font-size: 0.94rem;
-  font-weight: 700;
+  display: none;
 }
 
 .navigation-app__label {
-  font-size: 0.86rem;
-  line-height: 1.35;
+  font-size: 0.92rem;
+  line-height: 1.4;
   word-break: keep-all;
-}
-
-.navigation-app--naver .navigation-app__icon {
-  background: transparent;
-  color: #17b75f;
-}
-
-.navigation-app--tmap .navigation-app__icon {
-  background: transparent;
-  color: #4e7bff;
-}
-
-.navigation-app--kakao .navigation-app__icon {
-  background: transparent;
-  color: #c39a00;
 }
 
 .location-guide__copy {

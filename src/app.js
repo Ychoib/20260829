@@ -181,7 +181,6 @@ function renderMapLinks(items) {
                 data-map-action="${escapeHtml(item.action)}"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                <span class="navigation-app__icon" aria-hidden="true">${escapeHtml(item.iconText || item.label.slice(0, 1))}</span>
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </button>
             `
@@ -193,7 +192,6 @@ function renderMapLinks(items) {
                 rel="noreferrer"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
-                <span class="navigation-app__icon" aria-hidden="true">${escapeHtml(item.iconText || item.label.slice(0, 1))}</span>
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </a>
             `
