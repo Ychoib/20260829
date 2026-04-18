@@ -235,6 +235,22 @@ function renderLocationGuideSections(sections) {
     .join("");
 }
 
+function renderInformationCards(cards) {
+  return cards
+    .map(
+      (card, index) => `
+        <article class="overview-card${index === 0 ? " overview-card--wide" : ""}">
+          <span class="overview-card__label">${escapeHtml(card.title)}</span>
+          <h2 class="overview-card__heading">${escapeHtml(card.heading)}</h2>
+          <div class="overview-card__lines">
+            ${card.lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+}
+
 function createPageMarkup(data) {
   return `
     <button class="music-fab" type="button" data-action="music-toggle" aria-pressed="false" aria-label="배경음악 재생">
@@ -257,6 +273,9 @@ function createPageMarkup(data) {
       <div class="hero__meta">
         <p class="hero__date">${escapeHtml(data.event.displayDate)}</p>
         <p class="hero__venue">${escapeHtml(data.event.venue)}</p>
+      </div>
+      <div class="hero__summary reveal is-visible" data-reveal>
+        ${renderInformationCards(data.informationCards)}
       </div>
     </section>
 
@@ -288,13 +307,13 @@ function createPageMarkup(data) {
 
         <div class="location-guide">
           <section class="guide-block guide-block--navigation">
-            <h3 class="guide-block__title">내비게이션</h3>
+            <h3 class="guide-block__title">${escapeHtml(data.locationGuide.navigationTitle || "네비게이션")}</h3>
             <div class="navigation-apps">
               ${renderMapLinks(data.maps.apps)}
             </div>
             <button class="location-guide__copy" type="button" data-copy="${escapeHtml(data.event.address)}">
-              <span class="location-guide__copy-title">주소 복사하기</span>
-              <span class="location-guide__copy-caption">${escapeHtml(data.event.address)}</span>
+              <span class="location-guide__copy-title">${escapeHtml(data.locationGuide.copyLabel || "주소 복사")}</span>
+              <span class="location-guide__copy-caption">${escapeHtml(data.locationGuide.copyCaption || data.event.address)}</span>
             </button>
           </section>
 

@@ -145,9 +145,9 @@ export const invitationData = {
     ],
   },
   locationGuide: {
-    navigationTitle: "내비게이션",
+    navigationTitle: "네비게이션",
     copyLabel: "주소 복사",
-    copyCaption: "예식장 주소 저장",
+    copyCaption: "서울 송파구 올림픽로 319 3층",
     sections: [
       {
         title: "지하철",
