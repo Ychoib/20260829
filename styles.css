@@ -577,10 +577,10 @@ a {
 }
 
 .navigation-apps {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   margin-top: 14px;
 }
 
@@ -588,10 +588,10 @@ a {
   appearance: none;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0;
+  justify-content: center;
+  gap: 7px;
   min-height: auto;
-  padding: 0 0 4px;
+  padding: 0 0 6px;
   border: 0;
   border-bottom: 1px solid rgba(94, 74, 53, 0.16);
   border-radius: 0;
@@ -615,10 +615,18 @@ a {
   display: none;
 }
 
+.navigation-app__icon-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
 .navigation-app__label {
-  font-size: 0.92rem;
+  font-size: 0.84rem;
   line-height: 1.4;
   word-break: keep-all;
+  letter-spacing: -0.01em;
 }
 
 .location-guide__copy {
@@ -835,23 +843,38 @@ a {
 }
 
 .account-group {
-  padding: 0;
+  padding: 14px 14px 10px;
+  border: 1px solid rgba(88, 68, 47, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 252, 247, 0.88);
 }
 
 .account-group__entries {
   display: grid;
-  gap: 12px;
+  gap: 0;
 }
 
 .account-box {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 1fr auto;
+  gap: 10px 12px;
+  align-items: center;
   padding: 14px 0 12px;
   border: 0;
   border-top: 1px solid rgba(93, 74, 54, 0.12);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.account-box:first-child {
+  padding-top: 2px;
+  border-top: 0;
+}
+
+.account-box__main {
+  display: grid;
+  gap: 5px;
 }
 
 .account-box__label,
@@ -869,9 +892,9 @@ a {
 .account-box__number {
   color: var(--text);
   font-family: var(--font-serif);
-  font-size: 1.14rem;
+  font-size: 1.02rem;
   font-weight: 400;
-  line-height: 1.55;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -903,10 +926,10 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-start;
+  align-self: center;
   width: fit-content;
-  min-height: 34px;
-  margin-top: 4px;
+  min-height: auto;
+  margin-top: 0;
   padding: 0 0 6px;
   border: 0;
   border-bottom: 1px solid rgba(93, 74, 54, 0.14);

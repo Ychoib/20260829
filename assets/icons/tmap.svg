@@ -1,0 +1,15 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tmapHorizontal" x1="18" y1="20" x2="96" y2="20" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F63BB3"/>
+      <stop offset="0.52" stop-color="#9D39F0"/>
+      <stop offset="1" stop-color="#34D9B7"/>
+    </linearGradient>
+    <linearGradient id="tmapVertical" x1="54" y1="34" x2="96" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#36D4B5"/>
+      <stop offset="1" stop-color="#1B5FEF"/>
+    </linearGradient>
+  </defs>
+  <path d="M18 20H96V38H57.5C52.5 38 49 34.5 49 29.5V20H18Z" fill="url(#tmapHorizontal)"/>
+  <path d="M57 106V67.5C57 40.714 78.714 19 105.5 19H120V37H105.5C88.655 37 75 50.655 75 67.5V106H57Z" fill="url(#tmapVertical)"/>
+</svg>

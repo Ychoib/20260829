@@ -102,7 +102,7 @@ export const invitationData = {
       {
         label: "네이버지도",
         caption: "앱에서 열기",
-        iconText: "N",
+        iconSrc: "./assets/icons/naver-map.svg",
         brand: "naver",
         type: "app",
         action: "open-naver-map-app",
@@ -117,7 +117,7 @@ export const invitationData = {
       {
         label: "티맵",
         caption: "앱 길찾기",
-        iconText: "T",
+        iconSrc: "./assets/icons/tmap.svg",
         brand: "tmap",
         type: "app",
         action: "open-tmap-app",
@@ -133,7 +133,7 @@ export const invitationData = {
       {
         label: "카카오맵",
         caption: "앱에서 보기",
-        iconText: "K",
+        iconSrc: "./assets/icons/kakao-navi.svg",
         brand: "kakao",
         type: "app",
         action: "open-kakao-map-app",
@@ -151,6 +151,7 @@ export const invitationData = {
     sections: [
       {
         title: "지하철",
+        compact: true,
         items: [
           { marker: "line2", text: "2호선 잠실역 8번 출구 약 300m" },
           { marker: "line8", text: "8호선 잠실역 9번 출구 약 30m" },
@@ -158,6 +159,7 @@ export const invitationData = {
       },
       {
         title: "버스",
+        compact: true,
         items: [
           { marker: "neutral", text: "일반버스 : 16, 32, 100, 101" },
           { marker: "bus-blue", text: "간선버스 : 310, 341, 360" },
@@ -168,11 +170,8 @@ export const invitationData = {
         ],
       },
       {
-        title: "자가용",
-        items: [{ marker: "none", text: "서울 송파구 올림픽로 319" }],
-      },
-      {
         title: "주차",
+        compact: true,
         items: [{ marker: "none", text: "교통회관 지상, 지하 주차장 이용" }],
       },
     ],

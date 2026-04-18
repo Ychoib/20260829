@@ -1,0 +1,11 @@
+<svg width="120" height="164" viewBox="0 0 120 164" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="naverGradient" x1="18" y1="18" x2="96" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1678FF"/>
+      <stop offset="0.45" stop-color="#0F6BFF"/>
+      <stop offset="1" stop-color="#00E600"/>
+    </linearGradient>
+  </defs>
+  <path d="M60 0C93.137 0 120 26.863 120 60C120 96.69 89.718 131.626 69.746 156.101C64.857 162.087 55.143 162.087 50.254 156.101C30.282 131.626 0 96.69 0 60C0 26.863 26.863 0 60 0Z" fill="url(#naverGradient)"/>
+  <path d="M35 41H50.707L70 71.129V41H85V123H69.293L50 92.871V123H35V41Z" fill="white"/>
+</svg>

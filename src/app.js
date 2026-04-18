@@ -147,9 +147,11 @@ function renderAccountGroups(groups) {
               .map(
                 (entry) => `
                   <article class="account-box">
-                    <span class="account-box__label">${escapeHtml(entry.label)}</span>
-                    <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
-                    <span class="account-box__holder">예금주 ${escapeHtml(entry.holder)}</span>
+                    <div class="account-box__main">
+                      <span class="account-box__label">${escapeHtml(entry.label)}</span>
+                      <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
+                      <span class="account-box__holder">예금주 ${escapeHtml(entry.holder)}</span>
+                    </div>
                     <button
                       class="account-box__button"
                       type="button"
@@ -181,6 +183,11 @@ function renderMapLinks(items) {
                 data-map-action="${escapeHtml(item.action)}"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
+                ${
+                  item.iconSrc
+                    ? `<img class="navigation-app__icon-image" src="${escapeHtml(item.iconSrc)}" alt="" aria-hidden="true" />`
+                    : ""
+                }
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </button>
             `
@@ -192,6 +199,11 @@ function renderMapLinks(items) {
                 rel="noreferrer"
                 aria-label="${escapeHtml(item.label)} 열기"
               >
+                ${
+                  item.iconSrc
+                    ? `<img class="navigation-app__icon-image" src="${escapeHtml(item.iconSrc)}" alt="" aria-hidden="true" />`
+                    : ""
+                }
                 <span class="navigation-app__label">${escapeHtml(item.label)}</span>
               </a>
             `
@@ -221,8 +233,8 @@ function renderLocationGuideItem(item) {
 function renderLocationGuideSections(sections) {
   return sections
     .map(
-      (section, index) => `
-        <section class="guide-block${index < 2 ? " guide-block--compact" : ""}">
+      (section) => `
+        <section class="guide-block${section.compact ? " guide-block--compact" : ""}">
           <h3 class="guide-block__title">${escapeHtml(section.title)}</h3>
           <ul class="guide-list">
             ${section.items.map((item) => renderLocationGuideItem(item)).join("")}
