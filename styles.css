@@ -552,6 +552,13 @@ a {
   background: transparent;
 }
 
+.guide-block--compact {
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(88, 68, 47, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 252, 247, 0.85);
+}
+
 .guide-block--navigation {
   padding-top: 16px;
   border-top: 0;
@@ -563,6 +570,10 @@ a {
   font-family: var(--font-serif);
   font-size: 1.2rem;
   font-weight: 400;
+}
+
+.guide-block--compact .guide-block__title {
+  font-size: 1rem;
 }
 
 .navigation-apps {
@@ -642,6 +653,7 @@ a {
 
 .guide-blocks {
   display: grid;
+  gap: 10px;
 }
 
 .guide-list {
@@ -662,6 +674,17 @@ a {
   word-break: keep-all;
 }
 
+.guide-block--compact .guide-list {
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.guide-block--compact .guide-item {
+  gap: 8px;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
 .guide-item--plain {
   gap: 0;
 }
@@ -673,6 +696,12 @@ a {
   margin-top: 0.42rem;
   border-radius: 999px;
   background: #a29485;
+}
+
+.guide-block--compact .guide-item__marker {
+  width: 9px;
+  height: 9px;
+  margin-top: 0.38rem;
 }
 
 .guide-item__marker--line2 {
@@ -708,6 +737,14 @@ a {
   color: var(--text-faint);
   font-size: 1rem;
   line-height: 1.6;
+}
+
+.guide-block--compact .guide-item__marker--bullet {
+  width: auto;
+  height: auto;
+  margin-top: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
 }
 
 .guide-item__text {

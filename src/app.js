@@ -221,8 +221,8 @@ function renderLocationGuideItem(item) {
 function renderLocationGuideSections(sections) {
   return sections
     .map(
-      (section) => `
-        <section class="guide-block">
+      (section, index) => `
+        <section class="guide-block${index < 2 ? " guide-block--compact" : ""}">
           <h3 class="guide-block__title">${escapeHtml(section.title)}</h3>
           <ul class="guide-list">
             ${section.items.map((item) => renderLocationGuideItem(item)).join("")}
