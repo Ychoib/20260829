@@ -274,29 +274,6 @@ function createPageMarkup(data) {
     </section>
 
     <section class="section">
-      <div class="schedule-card reveal" data-reveal>
-        <div class="schedule-card__intro">
-          <h2 class="section-title section-title--en">Wedding Day</h2>
-          <p class="schedule-card__date">${escapeHtml(data.event.shortDate)}</p>
-          <p class="schedule-card__text">${escapeHtml(data.event.dayOfWeekLabel)}</p>
-        </div>
-        ${renderCalendar(data.event.isoDate)}
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="gallery-panel reveal" data-reveal>
-        <div class="gallery-panel__heading">
-          <h2 class="section-title section-title--en">Gallery</h2>
-          <p class="gallery-panel__sub">Moment of Love</p>
-        </div>
-        <div class="gallery-grid">
-          ${renderGallery(data.gallery)}
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
       <div class="location-card reveal" data-reveal>
         <div class="location-card__heading">
           <h2 class="section-title section-title--en">Location</h2>
@@ -331,18 +308,6 @@ function createPageMarkup(data) {
     <section class="section">
       <div class="utility-card reveal" data-reveal>
         <div class="utility-card__heading">
-          <h2 class="section-title section-title--en">Contact</h2>
-          <p class="utility-card__sub">축하의 마음 전하기</p>
-        </div>
-        <div class="contact-grid">
-          ${renderContacts(data.contacts)}
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="utility-card reveal" data-reveal>
-        <div class="utility-card__heading">
           <h2 class="section-title section-title--en">Gift</h2>
           <p class="utility-card__sub">마음 전하실 곳</p>
         </div>
@@ -353,11 +318,22 @@ function createPageMarkup(data) {
       </div>
     </section>
 
+    <section class="section">
+      <div class="gallery-panel reveal" data-reveal>
+        <div class="gallery-panel__heading">
+          <h2 class="section-title section-title--en">Gallery</h2>
+          <p class="gallery-panel__sub">Moment of Love</p>
+        </div>
+        <div class="gallery-grid">
+          ${renderGallery(data.gallery)}
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="footer__actions">
         <button class="pill-button" type="button" data-action="share">링크 공유</button>
         <button class="pill-button" type="button" data-action="copy-link">링크 복사</button>
-        <button class="pill-button" type="button" data-action="calendar">캘린더 추가</button>
       </div>
       <p class="footer__title">${escapeHtml(data.couple.groom)} &amp; ${escapeHtml(data.couple.bride)}</p>
       <p class="footer__date">${escapeHtml(data.event.shortDate)}</p>
