@@ -269,14 +269,14 @@ export const invitationData = {
       caption: "groom calm",
     },
     {
-      src: "./assets/images/gallery-03.jpg?v=20260504-updated-wedding-photos",
-      alt: "꽃 사이에 기대어 있는 최영찬과 이승현",
-      caption: "flower close",
+      src: "./assets/images/gallery-03.jpg?v=20260504-gallery-swap",
+      alt: "정원에서 마주 보는 최영찬과 이승현",
+      caption: "garden story",
     },
     {
-      src: "./assets/images/gallery-07.jpg?v=20260504-updated-wedding-photos",
-      alt: "나무문 앞에서 베이지 스타일링으로 선 최영찬과 이승현",
-      caption: "doorway mood",
+      src: "./assets/images/gallery-07.jpg?v=20260504-gallery-swap",
+      alt: "한옥 마루에서 서로를 바라보는 최영찬과 이승현",
+      caption: "hanok moment",
     },
     {
       src: "./assets/images/gallery-01.jpg?v=20260504-updated-wedding-photos",
