@@ -775,10 +775,10 @@ a {
 }
 
 .utility-card__copy {
-  margin: 14px auto 0;
+  margin: 12px auto 0;
   color: var(--text-soft);
-  font-size: 0.9rem;
-  line-height: 1.9;
+  font-size: 0.86rem;
+  line-height: 1.8;
   text-align: center;
   word-break: keep-all;
   max-width: 18rem;
@@ -845,16 +845,17 @@ a {
 
 .account-groups {
   display: grid;
-  gap: 16px;
-  margin-top: 22px;
+  gap: 18px;
+  max-width: 24rem;
+  margin: 24px auto 0;
   text-align: center;
 }
 
 .account-group__title {
-  margin: 0;
-  color: #6a5a4d;
+  margin: 0 0 2px;
+  color: #4f463d;
   font-family: var(--font-serif);
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   font-weight: 400;
   letter-spacing: 0;
   border: 0;
@@ -869,8 +870,10 @@ a {
 
 .account-group__entries {
   display: grid;
-  gap: 4px;
-  margin-top: 6px;
+  gap: 0;
+  margin-top: 7px;
+  border-top: 1px solid rgba(93, 74, 54, 0.09);
+  border-bottom: 1px solid rgba(93, 74, 54, 0.09);
 }
 
 .pill-button {
@@ -893,26 +896,29 @@ a {
 
 .account-line {
   appearance: none;
-  display: inline-flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr) 3.5rem;
   align-items: baseline;
-  justify-content: center;
-  gap: 4px 7px;
+  gap: 10px;
   width: 100%;
-  max-width: 26rem;
   min-height: auto;
-  margin: 0 auto;
-  padding: 2px 0;
+  margin: 0;
+  padding: 7px 0;
   border: 0;
+  border-top: 1px solid rgba(93, 74, 54, 0.07);
   border-radius: 0;
   background: transparent;
   color: var(--text-soft);
   font: inherit;
-  font-size: 0.86rem;
-  line-height: 1.65;
-  text-align: center;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  text-align: left;
   cursor: pointer;
   box-shadow: none;
+}
+
+.account-line:first-child {
+  border-top: 0;
 }
 
 .account-line:hover,
@@ -922,21 +928,26 @@ a {
 
 .account-line__role {
   color: #5f5248;
+  text-align: center;
   white-space: nowrap;
 }
 
-.account-line__role::after {
-  content: ":";
-}
-
-.account-line__detail {
+.account-line__account {
   color: var(--text-soft);
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 380px) {
+.account-line__holder {
+  color: #5f5248;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
   .account-line {
-    gap: 0 6px;
+    grid-template-columns: 1.8rem minmax(0, 1fr) 3rem;
+    gap: 7px;
+    font-size: 0.8rem;
   }
 }
 

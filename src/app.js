@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260504-gift-accounts-from-card";
+import { invitationData } from "./invitation-data.js?v=20260504-gift-account-table";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -153,9 +153,8 @@ function renderAccountGroups(groups) {
                     aria-label="${escapeHtml(`${entry.label} ${entry.bank} ${entry.number} ${entry.holder} 복사`)}"
                   >
                     <span class="account-line__role">${escapeHtml(entry.label)}</span>
-                    <span class="account-line__detail">
-                      ${escapeHtml(`${entry.bank} ${entry.number} ${entry.holder}`)}
-                    </span>
+                    <span class="account-line__account">${escapeHtml(`${entry.bank} ${entry.number}`)}</span>
+                    <span class="account-line__holder">${escapeHtml(entry.holder)}</span>
                   </button>
                 `,
               )
