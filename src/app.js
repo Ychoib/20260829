@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260504-updated-wedding-photos";
+import { invitationData } from "./invitation-data.js?v=20260504-gift-text-list";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -146,20 +146,17 @@ function renderAccountGroups(groups) {
             ${group.entries
               .map(
                 (entry) => `
-                  <article class="account-box">
-                    <div class="account-box__meta">
-                      <span class="account-box__label">${escapeHtml(entry.label)}</span>
-                      <span class="account-box__holder">예금주 ${escapeHtml(entry.holder)}</span>
-                    </div>
-                    <strong class="account-box__number">${escapeHtml(`${entry.bank} ${entry.number}`)}</strong>
-                    <button
-                      class="account-box__button"
-                      type="button"
-                      data-copy="${escapeHtml(`${entry.bank} ${entry.number} (${entry.holder})`)}"
-                    >
-                      복사
-                    </button>
-                  </article>
+                  <button
+                    class="account-line"
+                    type="button"
+                    data-copy="${escapeHtml(`${entry.bank} ${entry.number} (${entry.holder})`)}"
+                    aria-label="${escapeHtml(`${entry.label} ${entry.bank} ${entry.number} ${entry.holder} 복사`)}"
+                  >
+                    <span class="account-line__role">${escapeHtml(entry.label)}</span>
+                    <span class="account-line__detail">
+                      ${escapeHtml(`${entry.bank} ${entry.number} ${entry.holder}`)}
+                    </span>
+                  </button>
                 `,
               )
               .join("")}
