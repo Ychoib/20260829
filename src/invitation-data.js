@@ -197,16 +197,22 @@ export const invitationData = {
         side: "신랑측",
         entries: [
           {
+            label: "부",
+            holder: "최형신",
+            bank: "신한은행",
+            number: "110-013-381555",
+          },
+          {
+            label: "모",
+            holder: "최현요",
+            bank: "국민은행",
+            number: "916401-01-004606",
+          },
+          {
             label: "신랑",
             holder: "최영찬",
             bank: "우리은행",
             number: "1002-753-424111",
-          },
-          {
-            label: "신랑 부모님",
-            holder: "최형신",
-            bank: "신한은행",
-            number: "110013381555",
           },
         ],
       },
@@ -214,10 +220,22 @@ export const invitationData = {
         side: "신부측",
         entries: [
           {
-            label: "신부 부모님",
+            label: "부",
+            holder: "이승노",
+            bank: "국민은행",
+            number: "331-21-0152-890",
+          },
+          {
+            label: "모",
             holder: "고현석",
             bank: "국민은행",
-            number: "821210640293",
+            number: "821-21-0640-293",
+          },
+          {
+            label: "신부",
+            holder: "이승현",
+            bank: "국민은행",
+            number: "439201-01-324685",
           },
         ],
       },

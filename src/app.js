@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260504-gift-text-list";
+import { invitationData } from "./invitation-data.js?v=20260504-gift-accounts-from-card";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
