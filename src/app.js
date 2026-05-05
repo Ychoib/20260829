@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-dreame-original-guide";
+import { invitationData } from "./invitation-data.js?v=20260505-attached-guide";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
