@@ -482,21 +482,6 @@ a {
   aspect-ratio: 1.25 / 1;
 }
 
-.gallery-card__caption {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  color: #fffaf5;
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  backdrop-filter: none;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.28);
-}
-
 .location-card__address {
   margin: 0;
   color: var(--text-soft);
@@ -916,35 +901,75 @@ a {
 
 .account-groups {
   display: grid;
-  gap: 18px;
+  gap: 0;
   max-width: 24rem;
   margin: 24px auto 0;
   text-align: center;
+  border-top: 1px solid rgba(93, 74, 54, 0.09);
+  border-bottom: 1px solid rgba(93, 74, 54, 0.09);
 }
 
 .account-group__title {
-  margin: 0 0 2px;
   color: #4f463d;
   font-family: var(--font-serif);
   font-size: 0.96rem;
   font-weight: 400;
   letter-spacing: 0;
-  border: 0;
 }
 
 .account-group {
   padding: 0;
   border: 0;
+  border-top: 1px solid rgba(93, 74, 54, 0.07);
   border-radius: 0;
   background: transparent;
+}
+
+.account-group:first-child {
+  border-top: 0;
+}
+
+.account-group__summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  cursor: pointer;
+  list-style: none;
+  text-align: left;
+}
+
+.account-group__summary::-webkit-details-marker {
+  display: none;
+}
+
+.account-group__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.account-group__hint::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 180ms ease;
+}
+
+.account-group[open] .account-group__hint::after {
+  transform: rotate(225deg) translateY(-1px);
 }
 
 .account-group__entries {
   display: grid;
   gap: 0;
-  margin-top: 7px;
-  border-top: 1px solid rgba(93, 74, 54, 0.09);
-  border-bottom: 1px solid rgba(93, 74, 54, 0.09);
+  padding-bottom: 9px;
 }
 
 .pill-button {

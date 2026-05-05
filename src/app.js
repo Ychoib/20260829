@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-attached-guide";
+import { invitationData } from "./invitation-data.js?v=20260505-original-photos-accordion";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -111,7 +111,6 @@ function renderGallery(items) {
           aria-label="${escapeHtml(item.alt)} 크게 보기"
         >
           <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy" />
-          <span class="gallery-card__caption">${escapeHtml(item.caption)}</span>
         </button>
       `,
     )
@@ -140,8 +139,11 @@ function renderAccountGroups(groups) {
   return groups
     .map(
       (group) => `
-        <section class="account-group">
-          <h3 class="account-group__title">${escapeHtml(group.side)}</h3>
+        <details class="account-group">
+          <summary class="account-group__summary">
+            <span class="account-group__title">${escapeHtml(group.side)}</span>
+            <span class="account-group__hint">계좌 보기</span>
+          </summary>
           <div class="account-group__entries">
             ${group.entries
               .map(
@@ -160,7 +162,7 @@ function renderAccountGroups(groups) {
               )
               .join("")}
           </div>
-        </section>
+        </details>
       `,
     )
     .join("");
@@ -325,9 +327,6 @@ function createPageMarkup(data) {
       <div class="hero__meta">
         <p class="hero__date">${escapeHtml(data.event.displayDate)}</p>
         <p class="hero__venue">${escapeHtml(data.event.venue)}</p>
-      </div>
-      <div class="hero__summary reveal is-visible" data-reveal>
-        ${renderInformationCards(data.informationCards)}
       </div>
     </section>
 
@@ -681,7 +680,8 @@ function createCalendarFile(data) {
 function openLightbox(item) {
   lightboxImage.src = item.src;
   lightboxImage.alt = item.alt;
-  lightboxCaption.textContent = item.caption;
+  lightboxCaption.textContent = "";
+  lightboxCaption.hidden = true;
   lightbox.hidden = false;
   document.body.style.overflow = "hidden";
 }
@@ -691,6 +691,7 @@ function closeLightbox() {
   lightboxImage.src = "";
   lightboxImage.alt = "";
   lightboxCaption.textContent = "";
+  lightboxCaption.hidden = false;
   document.body.style.overflow = "";
 }
 
