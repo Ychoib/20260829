@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-image-preload";
+import { invitationData } from "./invitation-data.js?v=20260505-gallery-thumbs";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -111,7 +111,13 @@ function renderGallery(items) {
           data-reveal
           aria-label="${escapeHtml(item.alt)} 크게 보기"
         >
-          <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low" />
+          <img
+            src="${escapeHtml(item.thumb || item.src)}"
+            alt="${escapeHtml(item.alt)}"
+            loading="lazy"
+            decoding="async"
+            fetchpriority="low"
+          />
         </button>
       `,
     )
@@ -708,22 +714,29 @@ function preloadImage(src, priority = "low") {
   imagePreloadCache.set(src, image);
 }
 
+function runWhenIdle(callback, timeout = 1200) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, { timeout });
+    return;
+  }
+
+  window.setTimeout(callback, timeout);
+}
+
 function preloadInvitationImages(data) {
-  const sources = [
-    data.hero?.image,
-    data.spotlight?.image,
+  const immediateSources = [data.hero?.image].filter(Boolean);
+  const deferredSources = [
     data.donation?.image?.src,
-    ...(data.gallery || []).map((item) => item.src),
+    ...(data.gallery || []).map((item) => item.thumb || item.src),
   ].filter(Boolean);
-  const uniqueSources = [...new Set(sources)];
 
-  uniqueSources.slice(0, 3).forEach((src, index) => preloadImage(src, index === 0 ? "high" : "auto"));
+  immediateSources.forEach((src) => preloadImage(src, "high"));
 
-  const preloadRest = () => {
-    uniqueSources.slice(3).forEach((src) => preloadImage(src));
-  };
+  const uniqueDeferredSources = [...new Set(deferredSources)].filter((src) => !imagePreloadCache.has(src));
 
-  window.setTimeout(preloadRest, 300);
+  runWhenIdle(() => {
+    uniqueDeferredSources.forEach((src) => preloadImage(src));
+  });
 }
 
 function updateMusicButton(isPlaying) {

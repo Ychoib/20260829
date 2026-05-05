@@ -245,39 +245,48 @@ export const invitationData = {
   gallery: [
     {
       src: "./assets/images/half/gallery-04.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-04.jpg?v=20260505-gallery-thumbs",
       alt: "한옥 앞에서 함께 서 있는 최영찬과 이승현",
       layout: "featured",
     },
     {
       src: "./assets/images/half/gallery-02.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-02.jpg?v=20260505-gallery-thumbs",
       alt: "초록빛 정원에서 서로를 바라보는 최영찬과 이승현",
     },
     {
       src: "./assets/images/half/gallery-08.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-08.jpg?v=20260505-gallery-thumbs",
       alt: "문 앞에서 장난스럽게 포즈를 취한 최영찬과 이승현",
     },
     {
       src: "./assets/images/half/gallery-06.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-06.jpg?v=20260505-gallery-thumbs",
       alt: "화이트 공간에서 부케를 든 이승현",
     },
     {
       src: "./assets/images/half/gallery-05.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-05.jpg?v=20260505-gallery-thumbs",
       alt: "정원 벤치에 앉아 있는 최영찬",
     },
     {
       src: "./assets/images/half/gallery-03.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-03.jpg?v=20260505-gallery-thumbs",
       alt: "정원에서 마주 보는 최영찬과 이승현",
     },
     {
       src: "./assets/images/half/gallery-07.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-07.jpg?v=20260505-gallery-thumbs",
       alt: "한옥 마루에서 서로를 바라보는 최영찬과 이승현",
     },
     {
       src: "./assets/images/half/gallery-01.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-01.jpg?v=20260505-gallery-thumbs",
       alt: "초록 정원 앞에 함께 선 최영찬과 이승현",
     },
     {
       src: "./assets/images/half/gallery-09.jpg?v=20260505-half-photos",
+      thumb: "./assets/images/thumb/gallery-09.jpg?v=20260505-gallery-thumbs",
       alt: "한옥 마루에서 포즈를 취한 최영찬과 이승현",
     },
   ],
