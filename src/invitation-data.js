@@ -190,6 +190,13 @@ export const invitationData = {
       buttonLabel: "신부에게 연락하기",
     },
   ],
+  donation: {
+    title: "Rice Donation",
+    subtitle: "화환 안내",
+    message:
+      "축하 화환은 정중히 사양하고, 보내주시는 마음은 쌀 기부로 대신 나누려 합니다.",
+    lines: ["두 사람의 이름으로 필요한 곳에 따뜻하게 전달하겠습니다.", "너른 마음으로 함께해 주셔서 감사합니다."],
+  },
   account: {
     message: "멀리서도 전해주시는 따뜻한 마음에 감사드립니다.",
     groups: [

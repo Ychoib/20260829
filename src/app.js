@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260504-gallery-swap";
+import { invitationData } from "./invitation-data.js?v=20260505-rice-donation";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -257,6 +257,27 @@ function renderInformationCards(cards) {
     .join("");
 }
 
+function renderDonationSection(donation) {
+  if (!donation) {
+    return "";
+  }
+
+  return `
+    <section class="section">
+      <div class="donation-panel reveal" data-reveal>
+        <div class="donation-panel__heading">
+          <h2 class="section-title section-title--en">${escapeHtml(donation.title)}</h2>
+          <p class="donation-panel__sub">${escapeHtml(donation.subtitle)}</p>
+        </div>
+        <p class="donation-panel__message">${escapeHtml(donation.message)}</p>
+        <div class="donation-panel__lines">
+          ${donation.lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function createPageMarkup(data) {
   return `
     <button class="music-fab" type="button" data-action="music-toggle" aria-pressed="false" aria-label="배경음악 재생">
@@ -329,6 +350,8 @@ function createPageMarkup(data) {
         </div>
       </div>
     </section>
+
+    ${renderDonationSection(data.donation)}
 
     <section class="section">
       <div class="utility-card reveal" data-reveal>
