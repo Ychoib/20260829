@@ -21,7 +21,7 @@ export const invitationData = {
     yearLabel: "2026",
   },
   hero: {
-    image: "./assets/images/original/hero.jpg?v=20260505-original-photos",
+    image: "./assets/images/half/hero.jpg?v=20260505-half-photos",
     alt: "화사한 꽃길 사이에 함께 선 최영찬과 이승현",
     label: "",
   },
@@ -29,7 +29,7 @@ export const invitationData = {
     label: "EDITORIAL NOTE",
     title: "깔끔하지만 사랑스럽게",
     text: "여백이 많은 종이 위에 두 사람의 이름을 조심스럽게 적어두는 마음으로, 차분하고 단정한 무드 안에 귀여운 온기를 담았습니다.",
-    image: "./assets/images/original/gallery-04.jpg?v=20260505-original-photos",
+    image: "./assets/images/half/gallery-04.jpg?v=20260505-half-photos",
     alt: "꽃 배경 속에 함께 서 있는 두 사람",
   },
   invitation: {
@@ -244,40 +244,40 @@ export const invitationData = {
   },
   gallery: [
     {
-      src: "./assets/images/original/gallery-04.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-04.jpg?v=20260505-half-photos",
       alt: "한옥 앞에서 함께 서 있는 최영찬과 이승현",
       layout: "featured",
     },
     {
-      src: "./assets/images/original/gallery-02.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-02.jpg?v=20260505-half-photos",
       alt: "초록빛 정원에서 서로를 바라보는 최영찬과 이승현",
     },
     {
-      src: "./assets/images/original/gallery-08.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-08.jpg?v=20260505-half-photos",
       alt: "문 앞에서 장난스럽게 포즈를 취한 최영찬과 이승현",
     },
     {
-      src: "./assets/images/original/gallery-06.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-06.jpg?v=20260505-half-photos",
       alt: "화이트 공간에서 부케를 든 이승현",
     },
     {
-      src: "./assets/images/original/gallery-05.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-05.jpg?v=20260505-half-photos",
       alt: "정원 벤치에 앉아 있는 최영찬",
     },
     {
-      src: "./assets/images/original/gallery-03.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-03.jpg?v=20260505-half-photos",
       alt: "정원에서 마주 보는 최영찬과 이승현",
     },
     {
-      src: "./assets/images/original/gallery-07.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-07.jpg?v=20260505-half-photos",
       alt: "한옥 마루에서 서로를 바라보는 최영찬과 이승현",
     },
     {
-      src: "./assets/images/original/gallery-01.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-01.jpg?v=20260505-half-photos",
       alt: "초록 정원 앞에 함께 선 최영찬과 이승현",
     },
     {
-      src: "./assets/images/original/gallery-09.jpg?v=20260505-original-photos",
+      src: "./assets/images/half/gallery-09.jpg?v=20260505-half-photos",
       alt: "한옥 마루에서 포즈를 취한 최영찬과 이승현",
     },
   ],

@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-donation-copy";
+import { invitationData } from "./invitation-data.js?v=20260505-half-photos";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
