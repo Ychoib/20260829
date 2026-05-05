@@ -191,11 +191,17 @@ export const invitationData = {
     },
   ],
   donation: {
-    title: "Rice Donation",
-    subtitle: "화환 안내",
+    title: "화환 안내",
+    subtitle: "기부쌀 신청 안내",
     message:
       "축하 화환은 정중히 사양하고, 보내주시는 마음은 쌀 기부로 대신 나누려 합니다.",
     lines: ["두 사람의 이름으로 필요한 곳에 따뜻하게 전달하겠습니다.", "너른 마음으로 함께해 주셔서 감사합니다."],
+    image: {
+      src: "./assets/images/rice-donation-guide.png?v=20260505-dreame-guide",
+      alt: "영찬 승현 기부쌀 신청 안내",
+    },
+    ctaLabel: "기부쌀 신청하기",
+    ctaUrl: "https://dreame.co.kr/",
   },
   account: {
     message: "멀리서도 전해주시는 따뜻한 마음에 감사드립니다.",
