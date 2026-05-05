@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-half-photos";
+import { invitationData } from "./invitation-data.js?v=20260505-image-preload";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -11,6 +11,7 @@ const runtimeConfig = window.__INVITATION_CONFIG__ ?? {};
 let countdownTimerId;
 let naverMapLoader;
 let musicAutoplayCleanup;
+const imagePreloadCache = new Map();
 
 function escapeHtml(text) {
   return String(text ?? "")
@@ -110,7 +111,7 @@ function renderGallery(items) {
           data-reveal
           aria-label="${escapeHtml(item.alt)} 크게 보기"
         >
-          <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy" />
+          <img src="${item.src}" alt="${escapeHtml(item.alt)}" loading="lazy" decoding="async" fetchpriority="low" />
         </button>
       `,
     )
@@ -272,7 +273,7 @@ function renderDonationSection(donation) {
               ? `<a class="donation-panel__image-link" href="${escapeHtml(donation.ctaUrl)}" target="_blank" rel="noreferrer">`
               : ""
           }
-            <img src="${escapeHtml(donation.image.src)}" alt="${escapeHtml(donation.image.alt)}" loading="lazy" />
+            <img src="${escapeHtml(donation.image.src)}" alt="${escapeHtml(donation.image.alt)}" loading="lazy" decoding="async" />
           ${donation.ctaUrl ? "</a>" : ""}
         </figure>
       `
@@ -322,7 +323,7 @@ function createPageMarkup(data) {
         </div>
       </div>
       <figure class="hero__figure">
-        <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" />
+        <img class="hero__image" src="${data.hero.image}" alt="${escapeHtml(data.hero.alt)}" loading="eager" decoding="async" fetchpriority="high" />
       </figure>
       <div class="hero__meta">
         <p class="hero__date">${escapeHtml(data.event.displayDate)}</p>
@@ -695,6 +696,36 @@ function closeLightbox() {
   document.body.style.overflow = "";
 }
 
+function preloadImage(src, priority = "low") {
+  if (!src || imagePreloadCache.has(src)) {
+    return;
+  }
+
+  const image = new Image();
+  image.decoding = "async";
+  image.fetchPriority = priority;
+  image.src = src;
+  imagePreloadCache.set(src, image);
+}
+
+function preloadInvitationImages(data) {
+  const sources = [
+    data.hero?.image,
+    data.spotlight?.image,
+    data.donation?.image?.src,
+    ...(data.gallery || []).map((item) => item.src),
+  ].filter(Boolean);
+  const uniqueSources = [...new Set(sources)];
+
+  uniqueSources.slice(0, 3).forEach((src, index) => preloadImage(src, index === 0 ? "high" : "auto"));
+
+  const preloadRest = () => {
+    uniqueSources.slice(3).forEach((src) => preloadImage(src));
+  };
+
+  window.setTimeout(preloadRest, 300);
+}
+
 function updateMusicButton(isPlaying) {
   const button = document.querySelector("[data-action='music-toggle']");
   if (!button) {
@@ -924,6 +955,7 @@ function renderApp(data) {
   void attemptAutoPlayMusic();
   setupRevealAnimations();
   setupEventHandlers(data);
+  preloadInvitationImages(data);
   startCountdown(data.event.isoDate);
 }
 
