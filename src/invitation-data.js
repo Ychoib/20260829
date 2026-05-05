@@ -176,9 +176,14 @@ export const invitationData = {
   donation: {
     title: "화환 안내",
     subtitle: "기부쌀 신청 안내",
-    message:
-      "축하 화환은 정중히 사양하고, 보내주시는 마음은 쌀 기부로 대신 나누려 합니다.",
-    lines: ["두 사람의 이름으로 필요한 곳에 따뜻하게 전달하겠습니다.", "너른 마음으로 함께해 주셔서 감사합니다."],
+    message: "화환 대신 쌀을 기부를 받아.",
+    lines: [
+      "도움이 필요한 아이들에게 기부하고자 합니다.",
+      "쌀 기부 버튼을 누르시면",
+      "\"드리미\"사이트로 이동합니다.",
+      "신랑 신부 팝업창에서 신청하시면",
+      "좋은 곳에 기부하겠습니다.",
+    ],
     image: {
       src: "./assets/images/rice-donation-guide.png?v=20260505-attached-guide",
       alt: "영찬 승현 기부쌀 신청 안내",

@@ -1,4 +1,4 @@
-import { invitationData } from "./invitation-data.js?v=20260505-original-photos-accordion";
+import { invitationData } from "./invitation-data.js?v=20260505-donation-copy";
 
 const app = document.querySelector("#app");
 const toast = document.querySelector("#toast");
@@ -295,10 +295,10 @@ function renderDonationSection(donation) {
           ${donation.subtitle ? `<p class="donation-panel__sub">${escapeHtml(donation.subtitle)}</p>` : ""}
         </div>
         <p class="donation-panel__message">${escapeHtml(donation.message)}</p>
-        ${imageMarkup}
         <div class="donation-panel__lines">
           ${donation.lines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
         </div>
+        ${imageMarkup}
         ${ctaMarkup}
       </div>
     </section>
